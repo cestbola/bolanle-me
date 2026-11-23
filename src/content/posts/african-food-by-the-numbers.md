@@ -45,7 +45,7 @@ Cocoa is grown across the tropics, but the harvest is concentrated in a small st
 type: donut
 title: Where the world's cocoa beans came from, 2022/23
 unit: kt
-center: "Nearly 3 in 4"
+center: "73%"
 data:
   Côte d'Ivoire: 2180
   Ghana: 680
@@ -54,7 +54,7 @@ data:
   Rest of Africa: 204
   The Americas: 1052
   Asia and Oceania: 268
-caption: "Thousand tonnes. Source: ICCO Quarterly Bulletin of Cocoa Statistics, Vol. XLIX No. 4 (November 2023). Africa's share was 73.4%; later revisions put it at about 74%."
+caption: "Thousand tonnes. Source: ICCO Quarterly Bulletin of Cocoa Statistics, Vol. XLIX No. 4 (November 2023). The 73% in the middle is Africa's share (73.4%); later revisions put it at about 74%."
 ```
 
 ## The grain behind injera
