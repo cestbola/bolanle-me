@@ -1,0 +1,20 @@
+---
+import { fmtDate, readingTime, chartCount, spiceLabel, type Post } from '../lib/posts';
+interface Props { post: Post }
+const { post } = Astro.props;
+const charts = chartCount(post.body);
+---
+<a class="card" href={`/posts/${post.id}/`}>
+  <div class="card-top">
+    <span class="mood" aria-hidden="true">{post.data.mood}</span>
+    {charts > 0 && <span class="chart-badge">📊 {charts} chart{charts > 1 ? 's' : ''}</span>}
+  </div>
+  <h3>{post.data.title}</h3>
+  {post.data.description && <p>{post.data.description}</p>}
+  <div class="meta">
+    <span>{fmtDate(post.data.date)}</span>
+    <span>{readingTime(post.body)} min</span>
+    <span class="spice" title={`Spice level ${post.data.spice}/5`}>{spiceLabel(post.data.spice)}</span>
+    {post.data.draft && <strong>DRAFT</strong>}
+  </div>
+</a>

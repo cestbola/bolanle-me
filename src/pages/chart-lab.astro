@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/Base.astro';
+import { TEMPLATES } from '../charts/templates.js';
+const types = Object.keys(TEMPLATES);
+---
+<Base title="Chart Lab" description="Build an interactive chart, then paste it into a post.">
+  <section class="page-head wrap-wide">
+    <h1>The Chart Lab 🧪</h1>
+    <p>Pick a chart, tweak the words, watch it update. When it's perfect, copy it into a post.</p>
+  </section>
+  <section class="wrap-wide lab" style="margin-top:24px">
+    <div class="lab-panel">
+      <div class="lab-types" role="group" aria-label="Chart type">
+        {types.map((t) => <button type="button" data-type={t} aria-pressed="false">{t}</button>)}
+      </div>
+      <p class="lab-desc" id="lab-desc"></p>
+      <label class="visually-hidden" for="lab-src">Chart definition (YAML)</label>
+      <textarea id="lab-src" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+      <p class="lab-status" id="lab-status" aria-live="polite"></p>
+      <div class="lab-actions">
+        <button class="btn" type="button" id="lab-copy">Copy for my post 📋</button>
+        <button class="btn ghost" type="button" id="lab-reset">Reset example</button>
+      </div>
+    </div>
+    <div class="lab-preview" id="lab-preview"></div>
+  </section>
+
+  <script>
+    import { parse } from 'yaml';
+    import { normalize } from '../charts/normalize.js';
+    import { mountChart, animateIn } from '../charts/engine.js';
+    import { TEMPLATES } from '../charts/templates.js';
+
+    type T = keyof typeof TEMPLATES;
+    const src = document.getElementById('lab-src') as HTMLTextAreaElement;
+    const status = document.getElementById('lab-status')!;
+    const preview = document.getElementById('lab-preview')!;
+    const desc = document.getElementById('lab-desc')!;
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.lab-types button');
+    const DRAFT = 'bolanle:lab-draft';
+    let current: T = 'bar';
+    let timer: number | undefined;
+
+    function select(type: T, text?: string) {
+      current = type;
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.type === type)));
+      desc.textContent = TEMPLATES[type].blurb;
+      src.value = text ?? TEMPLATES[type].yaml;
+      update();
+    }
+
+    function update() {
+      try { localStorage.setItem(DRAFT, JSON.stringify({ type: current, text: src.value })); } catch {}
+      let spec;
+      try {
+        spec = normalize(parse(src.value));
+      } catch (err) {
+        status.className = 'lab-status bad';
+        status.textContent = `🙈 ${(err as Error).message}`;
+        return; // keep the last good preview on screen
+      }
+      status.className = 'lab-status good';
+      status.textContent = '✅ Looking good.';
+      if (spec.type !== current && spec.type in TEMPLATES) {
+        current = spec.type as T;
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.type === current)));
+        desc.textContent = TEMPLATES[current].blurb;
+      }
+      const fig = document.createElement('figure');
+      fig.className = `viz viz-${spec.type}`;
+      if (spec.title) {
+        const cap = document.createElement('figcaption');
+        cap.className = 'viz-title';
+        cap.textContent = spec.title;
+        fig.append(cap);
+      }
+      preview.replaceChildren(fig);
+      mountChart(fig, spec);
+      animateIn(fig);
+    }
+
+    buttons.forEach((b) => b.addEventListener('click', () => select(b.dataset.type as T)));
+    src.addEventListener('input', () => { clearTimeout(timer); timer = window.setTimeout(update, 250); });
+    src.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab') return;
+      e.preventDefault();
+      src.setRangeText('  ', src.selectionStart, src.selectionEnd, 'end');
+    });
+    document.getElementById('lab-reset')!.addEventListener('click', () => select(current));
+    const copyBtn = document.getElementById('lab-copy')!;
+    copyBtn.addEventListener('click', async () => {
+      const block = '```chart\n' + src.value.trimEnd() + '\n```\n';
+      try {
+        await navigator.clipboard.writeText(block);
+        copyBtn.textContent = 'Copied! Paste it in a post ✨';
+      } catch {
+        copyBtn.textContent = 'Copy failed — select the text manually';
+      }
+      setTimeout(() => (copyBtn.textContent = 'Copy for my post 📋'), 2200);
+    });
+
+    let draft: { type: T; text: string } | null = null;
+    try { draft = JSON.parse(localStorage.getItem(DRAFT) || 'null'); } catch {}
+    const fromHash = location.hash.slice(1) as T;
+    if (fromHash in TEMPLATES) select(fromHash);
+    else if (draft && draft.type in TEMPLATES) select(draft.type, draft.text);
+    else select('bar');
+  </script>
+</Base>

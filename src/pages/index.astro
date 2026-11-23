@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import PostCard from '../components/PostCard.astro';
+import ThoughtMap from '../components/ThoughtMap.astro';
+import { getPosts, slugifyTag } from '../lib/posts';
+import { SITE } from '../site';
+
+const posts = await getPosts();
+const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+---
+<Base>
+  <section class="hero wrap-wide">
+    <h1>Hi, I'm {SITE.author} <span class="wiggle">👋</span><br />I <span class="hl">chart my thoughts.</span></h1>
+    <p>{SITE.tagline} Poke the charts — most of them poke back.</p>
+    <div class="hero-actions">
+      {posts[0] && <a class="btn" href={`/posts/${posts[0].id}/`}>Read the latest →</a>}
+      {posts.length > 1 && <button class="btn ghost" id="surprise" type="button" data-slugs={JSON.stringify(posts.map((p) => p.id))}>🎲 Surprise me</button>}
+      <a class="btn pink" href="/chart-lab/">Chart Lab 🧪</a>
+    </div>
+    <div class="sticker" aria-hidden="true">{SITE.sticker}</div>
+  </section>
+
+  <section class="wrap-wide">
+    <ThoughtMap posts={posts} />
+
+    <h2 class="section-title">Latest thoughts <small>fresh-ish</small></h2>
+    {posts.length ? (
+      <div class="post-grid">{posts.slice(0, 9).map((post) => <PostCard post={post} />)}</div>
+    ) : (
+      <p class="empty">No thoughts yet. Run <code>npm run new "My first take"</code> ✍️</p>
+    )}
+    {posts.length > 9 && <p style="margin-top:20px"><a href="/posts/">All {posts.length} posts →</a></p>}
+
+    {tags.length > 0 && (
+      <>
+        <h2 class="section-title">Things I think about</h2>
+        <div class="tag-cloud">{tags.map((t) => <a class="tag" href={`/tags/${slugifyTag(t)}/`}>#{t}</a>)}</div>
+      </>
+    )}
+  </section>
+  <script>
+    const b = document.getElementById('surprise');
+    b?.addEventListener('click', () => {
+      const slugs: string[] = JSON.parse(b.dataset.slugs || '[]');
+      location.href = `/posts/${slugs[Math.floor(Math.random() * slugs.length)]}/`;
+    });
+  </script>
+</Base>

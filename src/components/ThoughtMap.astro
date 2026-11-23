@@ -1,0 +1,39 @@
+---
+// A little scatter of every post: when I wrote it × how spicy it was.
+import { fmtDate, type Post } from '../lib/posts';
+interface Props { posts: Post[] }
+const { posts } = Astro.props;
+const W = 720, H = 220, m = { l: 44, r: 30, t: 26, b: 30 };
+const times = posts.map((p) => p.data.date.getTime());
+const t0 = Math.min(...times), t1 = Math.max(...times);
+const span = t1 - t0 || 1;
+const x = (t: number) => (posts.length === 1 ? W / 2 : m.l + ((t - t0) / span) * (W - m.l - m.r));
+const y = (s: number) => m.t + (1 - s / 5) * (H - m.t - m.b);
+const dots = posts.map((p, i) => ({
+  p, cx: x(p.data.date.getTime()), cy: y(p.data.spice) + ((i % 3) - 1) * 4,
+}));
+---
+{posts.length > 0 && (
+  <figure class="viz thought-map">
+    <figcaption class="viz-title">The thought map <span class="hand" style="font-weight:600;color:var(--ink-2)">— every post, by date &amp; spice</span></figcaption>
+    <svg viewBox={`0 0 ${W} ${H}`} class="viz-svg" style="width:100%;height:auto" role="img" aria-label="Scatter of posts by date and spice level">
+      {[0, 1, 2, 3, 4, 5].map((s) => (
+        <g class="axis">
+          <line x1={m.l} x2={W - m.r} y1={y(s)} y2={y(s)} class={s === 0 ? 'baseline' : 'grid'} />
+          <text x={m.l - 10} y={y(s) + 4} text-anchor="end">{s === 0 ? '🧊' : s === 5 ? '5🌶️' : s}</text>
+        </g>
+      ))}
+      {dots.map(({ p, cx, cy }) => (
+        <a href={`/posts/${p.id}/`} aria-label={p.data.title}>
+          <g class="tm-dot" tabindex="-1">
+            <circle cx={cx} cy={cy} r="17" fill="var(--card)" stroke="var(--line)" stroke-width="2" />
+            <text x={cx} y={cy + 7} text-anchor="middle" style="font-size:19px">{p.data.mood}</text>
+            <title>{p.data.title} · {fmtDate(p.data.date)}</title>
+          </g>
+        </a>
+      ))}
+      <text x={m.l} y={H - 6} class="axis" style="fill:var(--muted);font-size:11px">{fmtDate(new Date(t0))}</text>
+      <text x={W - m.r} y={H - 6} text-anchor="end" class="axis" style="fill:var(--muted);font-size:11px">{fmtDate(new Date(t1))}</text>
+    </svg>
+  </figure>
+)}
