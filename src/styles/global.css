@@ -396,7 +396,7 @@ ol.viz-cites li::before { content: '[' counter(cite) '] '; font-weight: 600; col
 /* you: photo, about, author card */
 .avatar { --size: 160px; width: var(--size); height: var(--size); flex: none; display: inline-block; position: relative; }
 .avatar.framed::before { content: ''; position: absolute; inset: 0; translate: 12px 12px; background: var(--brand); }
-.avatar img, .avatar-fallback { position: relative; width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(.15); }
+.avatar img, .avatar-fallback { position: relative; width: 100%; height: 100%; object-fit: cover; display: block; }
 .avatar.round img, .avatar.round .avatar-fallback { border-radius: 50%; }
 .avatar-fallback { display: grid; place-items: center; background: var(--sunk); color: var(--ink-2); font: 500 calc(var(--size) * .42) var(--serif); border: 1px solid var(--rule); }
 

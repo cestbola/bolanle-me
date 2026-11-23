@@ -12,7 +12,7 @@ export const ME = {
   // Drop a photo into /public (e.g. public/me.jpg) and put its path here.
   // Square-ish works best. Until the file exists, a doodle avatar shows instead.
   photo: '/me.jpg',
-  photoAlt: 'Photo of Bolanle',
+  photoAlt: 'Bolanle, seen from behind, sitting on a bench above the clouds at sunrise',
   // One line for the home page and post footers.
   shortBio: 'PLACEHOLDER: a one-line bio. Who you are and what you think about.',
   // The About page. Each string is a paragraph; **bold** works.
