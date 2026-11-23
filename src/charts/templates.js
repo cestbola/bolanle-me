@@ -1,92 +1,98 @@
 // Starter specs for the Chart Lab. Each is exactly what you'd paste inside a ```chart block.
 export const TEMPLATES = {
   bar: {
-    blurb: 'Rank things. Add emoji & notes; hover a bar to see the note. `highlight` makes your favourite pop.',
+    blurb: 'Compare amounts. Add a `note` to show on hover, and `highlight` to pick out one bar.',
     yaml: `type: bar
-title: Snacks, ranked by how fast they disappear
-unit: "/10"
+title: How wide is each planet?
+unit: km
 sort: desc
-highlight: Plantain chips
+highlight: Earth
 data:
-  - { label: Plantain chips, value: 10, emoji: 🍌, note: "Gone before the film starts" }
-  - { label: Chin chin, value: 9, emoji: 🍪 }
-  - { label: Popcorn, value: 7, emoji: 🍿 }
-  - { label: Rice cakes, value: 2, emoji: 🍘, note: "Why do I even buy these" }
+  - { label: Jupiter, value: 142984, note: "Wide enough to line up 11 Earths" }
+  - { label: Saturn, value: 120536 }
+  - { label: Uranus, value: 51118 }
+  - { label: Neptune, value: 49528 }
+  - { label: Earth, value: 12756, note: "You are here" }
+  - { label: Venus, value: 12104 }
+  - { label: Mars, value: 6792 }
+  - { label: Mercury, value: 4879 }
+caption: "Equatorial diameter. Source: NASA Planetary Fact Sheet."
 `,
   },
   line: {
-    blurb: 'Things over time. Add emoji `markers` per point and `annotations` for the plot twists.',
+    blurb: 'Change over time. Add `annotations` to mark the moments that matter.',
     yaml: `type: line
-title: My energy across a typical week
-unit: "%"
-x: [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
+title: Carbon dioxide in the air above Mauna Loa
+unit: ppm
+x: ["1960", "1970", "1980", "1990", "2000", "2010", "2020"]
 series:
-  Energy: [40, 55, 60, 50, 85, 95, 30]
-  Motivation: [70, 60, 45, 35, 50, 20, 60]
-markers: [😩, 🙂, 💪, 😐, 🎉, 🥳, 😴]
+  CO₂: [316.9, 325.7, 338.8, 354.5, 369.7, 389.9, 414.2]
 annotations:
-  - { at: Fri, text: "payday ✨" }
+  - { at: "1990", text: "Passes 350" }
+caption: "Annual mean concentration. Source: NOAA Global Monitoring Laboratory."
 `,
   },
   donut: {
-    blurb: 'Parts of a whole. Hover a slice (or the legend). Anything past 7 slices folds into "Other".',
+    blurb: 'Parts of a whole. Hover a slice or the legend. Anything past 7 slices folds into "Other".',
     yaml: `type: donut
-title: Where my brain goes in the shower
+title: What is the air made of?
 unit: "%"
-center: 🚿
 data:
-  Arguments I've already lost: 35
-  Business ideas: 25
-  Song lyrics (wrong): 20
-  Actual hygiene: 20
+  Nitrogen: 78.08
+  Oxygen: 20.95
+  Argon: 0.93
+  Everything else: 0.04
+caption: "Dry air, by volume."
 `,
   },
   meter: {
-    blurb: 'A hot-take meter. Readers slide to their answer, lock it in, and see how far they are from you.',
+    blurb: 'Ask readers a question. They answer on a slider, then see how close they are to you.',
     yaml: `type: meter
-title: The great debate
-question: Is a hot dog a sandwich?
-labels: [Absolutely not, Obviously yes]
-mine: 82
-why: Bread + filling = sandwich. I don't make the rules. (I do, it's my blog.)
+question: Should Pluto be a planet again?
+labels: [Dwarf planet is fine, Bring it back]
+mine: 35
+why: The rules make sense, but it'll always be the ninth planet in my head.
 `,
   },
   quadrant: {
-    blurb: 'A 2×2 for plotting opinions. Points go from -10 to 10 on each axis. Readers can drag them around.',
+    blurb: 'A 2×2 for placing things on two scales. Points go from -10 to 10 on each axis. Readers can drag them.',
     yaml: `type: quadrant
-title: Every cuisine, mapped scientifically
-x: [Mild, Spicy]
-y: [Comfort food, Fancy]
+title: Ways to see the night sky
+x: [Low effort, High effort]
+y: [Nice, Jaw-dropping]
 points:
-  Jollof rice: [6, -3]
-  Sushi: [-5, 7]
-  Mac & cheese: [-8, -8]
-  Thai green curry: [7, 3]
-  Ramen: [2, -5]
-  Tasting menu: [-2, 9]
+  Look up from the garden: [-9, -4]
+  Watch a meteor shower: [-3, 5]
+  Visit a planetarium: [1, 2]
+  Drive to a dark-sky park: [5, 8]
+  Buy a telescope: [7, 4]
+  Photograph the Milky Way: [9, 9]
 `,
   },
   guess: {
-    blurb: 'You-draw-it! Readers sketch how they think the line continues, then reveal the real data and get scored.',
+    blurb: 'Readers sketch how they think the line continues, then reveal the real data and get a score.',
     yaml: `type: guess
-title: How many books I read each year
-prompt: I started reading more in 2021. Guess what happened next ✏️
-unit: books
-x: ["2019", "2020", "2021", "2022", "2023", "2024", "2025"]
-values: [4, 6, 14, 22, 19, 31, 27]
-reveal_from: 3
+title: How many people live on Earth?
+prompt: You can see 1950 to 1980. Draw your guess up to 2020.
+unit: bn
+x: ["1950", "1960", "1970", "1980", "1990", "2000", "2010", "2020"]
+values: [2.49, 3.02, 3.69, 4.44, 5.31, 6.15, 6.99, 7.86]
+reveal_from: 4
+min: 0
+max: 10
+caption: "Source: UN World Population Prospects."
 `,
   },
   tier: {
-    blurb: 'A tier list readers can rearrange (drag, or tap-then-tap on phones) and compare with yours.',
+    blurb: 'A ranking readers can rearrange (drag, or tap then tap on phones) and compare with yours.',
     yaml: `type: tier
-title: Breakfast foods, definitively
+title: Planets, ranked by how good they look
 tiers:
-  S: [Pancakes, Akara]
-  A: [Full English, Waffles]
-  B: [Granola, Toast]
-  C: [Cereal]
-  D: [Plain oatmeal]
+  S: [Saturn, Jupiter]
+  A: [Earth, Neptune]
+  B: [Mars, Uranus]
+  C: [Venus]
+  D: [Mercury]
 `,
   },
 };
