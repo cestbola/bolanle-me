@@ -64,8 +64,9 @@ Every type also accepts `title`, `caption` and `source`. Write `source` with Mar
 
 ## Deploying
 
-`.github/workflows/deploy.yml` builds and publishes to **GitHub Pages** on every push to `main`. One-time setup: repo **Settings → Pages → Source: GitHub Actions**. For the custom domain, add `bolanle.me` under Settings → Pages and point your DNS at GitHub Pages.
-(Netlify/Vercel/Cloudflare Pages also work out of the box: build command `npm run build`, output `dist`.)
+The site is hosted on **Vercel**. Import the GitHub repo in Vercel once; it detects Astro automatically (build command `npm run build`, output `dist`, Node 24 from `package.json`). After that, every push to `main` deploys to production, and every other branch gets its own preview URL.
+
+For the custom domain, add `bolanle.me` under the Vercel project's **Settings → Domains** and follow the DNS instructions it shows.
 
 ## Editing without installing anything
 
@@ -75,4 +76,4 @@ You can do everything from the GitHub website:
 - **Your photo:** go to the `public` folder → **Add file → Upload files**, upload a photo named `me.jpg`, and commit.
 - **A new post:** go to `src/content/posts` → **Add file → Create new file**, name it `my-post.md`, and copy the top section (between the `---` lines) from an existing post.
 
-Once the site is deployed from `main`, every commit there republishes the site within a couple of minutes.
+Every commit to `main` republishes the site on Vercel within a minute or two.
