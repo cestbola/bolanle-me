@@ -1,0 +1,27 @@
+---
+import Intensity from './Intensity.astro';
+import { fmtDate, readingTime, chartCount, type Post } from '../lib/posts';
+interface Props { posts: Post[] }
+const { posts } = Astro.props;
+---
+<ul class="post-list">
+  {posts.map((post) => {
+    const charts = chartCount(post.body);
+    return (
+      <li>
+        <a class="post-item" href={`/posts/${post.id}/`}>
+          <time datetime={post.data.date.toISOString()}>{fmtDate(post.data.date)}</time>
+          <div>
+            <h3>{post.data.title}{post.data.draft && <small> (draft)</small>}</h3>
+            {post.data.description && <p>{post.data.description}</p>}
+          </div>
+          <div class="meta">
+            <span>{readingTime(post.body)} min read</span>
+            {charts > 0 && <span class="chart-count">{charts} interactive chart{charts > 1 ? 's' : ''}</span>}
+            <Intensity level={post.data.spice} />
+          </div>
+        </a>
+      </li>
+    );
+  })}
+</ul>

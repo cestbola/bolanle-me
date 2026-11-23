@@ -1,13 +1,13 @@
 ---
-// Your photo in a wobbly sticker frame. Falls back to a doodle until public/<photo> exists.
+// Your photo. Falls back to your initial until public/<photo> exists.
 import { existsSync } from 'node:fs';
 import { ME } from '../site';
 
-interface Props { size?: number; tilt?: boolean; class?: string }
-const { size = 160, tilt = true, class: cls = '' } = Astro.props;
+interface Props { size?: number; framed?: boolean; round?: boolean }
+const { size = 160, framed = false, round = false } = Astro.props;
 const hasPhoto = !!ME.photo && existsSync(`public${ME.photo}`);
 ---
-<span class:list={['avatar', { tilt }, cls]} style={`--size:${size}px`}>
+<span class:list={['avatar', { framed, round }]} style={`--size:${size}px`}>
   {hasPhoto ? (
     <img src={ME.photo} alt={ME.photoAlt} width={size} height={size} loading="lazy" decoding="async" />
   ) : (

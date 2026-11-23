@@ -2,9 +2,8 @@
 export const SITE = {
   name: 'bolanle.me',
   author: 'Bolanle',
-  tagline: 'Thoughts, takes & charts about things.',
-  description: 'A blog where Bolanle thinks out loud and charts it — interactive charts, hot-take meters, tier lists and more.',
-  sticker: 'now with 100% more charts ✨',
+  tagline: 'Essays and interactive charts on the things I think about.',
+  description: 'Essays by Bolanle, with interactive charts you can explore, question and redraw.',
 };
 
 // About you: shown on the home page, the About page, and at the end of every post.
@@ -21,11 +20,11 @@ export const ME = {
     'PLACEHOLDER: a paragraph or two about you. What you do, where you are, what you can’t stop thinking about.',
     'PLACEHOLDER: what this blog is for, and what readers can expect.',
   ],
-  // Little fact chips on the About page. Delete any you don’t want.
+  // Quick facts on the About page. Delete any you don’t want.
   facts: [
-    { emoji: '📍', text: 'PLACEHOLDER: where you’re based' },
-    { emoji: '💼', text: 'PLACEHOLDER: what you do' },
-    { emoji: '❤️', text: 'PLACEHOLDER: something you love' },
+    { label: 'Based in', text: 'PLACEHOLDER' },
+    { label: 'Work', text: 'PLACEHOLDER' },
+    { label: 'Writing about', text: 'PLACEHOLDER' },
   ],
   // Optional links. Remove lines you don’t use.
   links: [

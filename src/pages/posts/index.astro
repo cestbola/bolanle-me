@@ -1,24 +1,25 @@
 ---
 import Base from '../../layouts/Base.astro';
-import PostCard from '../../components/PostCard.astro';
+import PostList from '../../components/PostList.astro';
 import { getPosts, slugifyTag } from '../../lib/posts';
 
 const posts = await getPosts();
 const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
 const byYear = Map.groupBy(posts, (p) => p.data.date.getUTCFullYear());
 ---
-<Base title="All thoughts">
-  <section class="page-head wrap-wide">
-    <h1>All the thoughts 🗂️</h1>
-    <p>{posts.length} post{posts.length === 1 ? '' : 's'} and counting.</p>
-    {tags.length > 0 && <div class="tag-cloud" style="margin-top:16px">{tags.map((t) => <a class="tag" href={`/tags/${slugifyTag(t)}/`}>#{t}</a>)}</div>}
-  </section>
-  <section class="wrap-wide">
+<Base title="Writing">
+  <div class="wrap-wide">
+    <section class="page-head">
+      <span class="kicker">Archive</span>
+      <h1>Writing</h1>
+      <p>{posts.length} post{posts.length === 1 ? '' : 's'}, newest first.</p>
+      {tags.length > 0 && <div class="tag-cloud" style="margin-top:18px">{tags.map((t) => <a class="tag" href={`/tags/${slugifyTag(t)}/`}>{t}</a>)}</div>}
+    </section>
     {[...byYear].map(([year, list]) => (
       <>
-        <h2 class="section-title">{year}</h2>
-        <div class="post-grid">{list.map((post) => <PostCard post={post} />)}</div>
+        <h2 class="year">{year}</h2>
+        <PostList posts={list} />
       </>
     ))}
-  </section>
+  </div>
 </Base>

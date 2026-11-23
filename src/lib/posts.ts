@@ -18,6 +18,5 @@ export const readingTime = (body = '') => {
 
 export const chartCount = (body = '') => (body.match(/^```chart\s*$/gm) || []).length;
 
-export const spiceLabel = (n: number) => (n ? '🌶️'.repeat(n) : '🧊');
 
 export const slugifyTag = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');

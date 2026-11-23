@@ -59,7 +59,8 @@ Every type also accepts `title` and `caption`. Full examples for each type are i
 - [Astro](https://astro.build) static site, zero client framework.
 - `src/charts/remark-charts.mjs` turns chart blocks into placeholders at build time (validated by `normalize.js`).
 - `src/charts/engine.js` is a dependency-free SVG/HTML chart engine that renders them in the browser.
-- Light/dark mode follows the system, with a toggle. Chart colours use a colour-blind-checked palette.
+- Light/dark mode follows the system, with a toggle.
+- Chart colours (`--s1`…`--s8` in `src/styles/global.css`) are a yellow-led palette validated for colour-blind separation in both modes: marigold, blue, vermilion, teal, violet, green, rose, sky. The brighter brand yellow (`--brand`) is for UI accents only.
 
 ## Deploying
 

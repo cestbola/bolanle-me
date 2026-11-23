@@ -5,10 +5,11 @@ const types = Object.keys(TEMPLATES);
 ---
 <Base title="Chart Lab" description="Build an interactive chart, then paste it into a post.">
   <section class="page-head wrap-wide">
-    <h1>The Chart Lab 🧪</h1>
-    <p>Pick a chart, tweak the words, watch it update. When it's perfect, copy it into a post.</p>
+    <span class="kicker">Tools</span>
+    <h1>Chart Lab</h1>
+    <p>Choose a chart type, edit the definition, and the preview updates as you type. Copy the result into any post.</p>
   </section>
-  <section class="wrap-wide lab" style="margin-top:24px">
+  <section class="wrap-wide lab" style="margin-top:32px">
     <div class="lab-panel">
       <div class="lab-types" role="group" aria-label="Chart type">
         {types.map((t) => <button type="button" data-type={t} aria-pressed="false">{t}</button>)}
@@ -18,7 +19,7 @@ const types = Object.keys(TEMPLATES);
       <textarea id="lab-src" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
       <p class="lab-status" id="lab-status" aria-live="polite"></p>
       <div class="lab-actions">
-        <button class="btn" type="button" id="lab-copy">Copy for my post 📋</button>
+        <button class="btn" type="button" id="lab-copy">Copy for a post</button>
         <button class="btn ghost" type="button" id="lab-reset">Reset example</button>
       </div>
     </div>
@@ -56,11 +57,11 @@ const types = Object.keys(TEMPLATES);
         spec = normalize(parse(src.value));
       } catch (err) {
         status.className = 'lab-status bad';
-        status.textContent = `🙈 ${(err as Error).message}`;
+        status.textContent = `Error: ${(err as Error).message}`;
         return; // keep the last good preview on screen
       }
       status.className = 'lab-status good';
-      status.textContent = '✅ Looking good.';
+      status.textContent = 'Valid chart definition.';
       if (spec.type !== current && spec.type in TEMPLATES) {
         current = spec.type as T;
         buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.type === current)));
@@ -92,11 +93,11 @@ const types = Object.keys(TEMPLATES);
       const block = '```chart\n' + src.value.trimEnd() + '\n```\n';
       try {
         await navigator.clipboard.writeText(block);
-        copyBtn.textContent = 'Copied! Paste it in a post ✨';
+        copyBtn.textContent = 'Copied';
       } catch {
         copyBtn.textContent = 'Copy failed — select the text manually';
       }
-      setTimeout(() => (copyBtn.textContent = 'Copy for my post 📋'), 2200);
+      setTimeout(() => (copyBtn.textContent = 'Copy for a post'), 2200);
     });
 
     let draft: { type: T; text: string } | null = null;

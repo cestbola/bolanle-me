@@ -1,54 +1,42 @@
 ---
 import Base from '../layouts/Base.astro';
-import PostCard from '../components/PostCard.astro';
+import PostList from '../components/PostList.astro';
 import ThoughtMap from '../components/ThoughtMap.astro';
-import { getPosts, slugifyTag } from '../lib/posts';
 import Avatar from '../components/Avatar.astro';
+import { getPosts, slugifyTag } from '../lib/posts';
 import { SITE, ME } from '../site';
 
 const posts = await getPosts();
 const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
 ---
 <Base>
-  <section class="hero wrap-wide">
-    <div class="hero-text">
-    <h1>Hi, I'm {ME.name} <span class="wiggle">👋</span><br />I <span class="hl">chart my thoughts.</span></h1>
-    <p>{ME.shortBio} <a href="/about/">More about me →</a></p>
-    <div class="hero-actions">
-      {posts[0] && <a class="btn" href={`/posts/${posts[0].id}/`}>Read the latest →</a>}
-      {posts.length > 1 && <button class="btn ghost" id="surprise" type="button" data-slugs={JSON.stringify(posts.map((p) => p.id))}>🎲 Surprise me</button>}
-      <a class="btn pink" href="/chart-lab/">Chart Lab 🧪</a>
-    </div>
-    </div>
-    <a class="hero-photo" href="/about/" aria-label={`About ${ME.name}`}>
-      <Avatar size={260} />
-      <span class="sticker" aria-hidden="true">{SITE.sticker}</span>
-    </a>
-  </section>
+  <div class="wrap-wide">
+    <section class="hero">
+      <div>
+        <span class="kicker">{SITE.name}</span>
+        <h1>Thinking out loud, <span class="hl">in charts.</span></h1>
+        <p>I'm {ME.name}. {ME.shortBio}</p>
+        <div class="hero-actions">
+          {posts[0] && <a class="btn" href={`/posts/${posts[0].id}/`}>Read the latest</a>}
+          <a class="btn ghost" href="/about/">About me</a>
+        </div>
+      </div>
+      <a class="hero-photo" href="/about/" aria-label={`About ${ME.name}`}><Avatar size={240} framed /></a>
+    </section>
 
-  <section class="wrap-wide">
+    <div class="section-head">
+      <h2>Latest writing</h2>
+      {posts.length > 6 && <a href="/posts/">All {posts.length} posts →</a>}
+    </div>
+    {posts.length ? <PostList posts={posts.slice(0, 6)} /> : <p class="empty">No posts yet. Run <code>npm run new "My first post"</code>.</p>}
+
     <ThoughtMap posts={posts} />
-
-    <h2 class="section-title">Latest thoughts <small>fresh-ish</small></h2>
-    {posts.length ? (
-      <div class="post-grid">{posts.slice(0, 9).map((post) => <PostCard post={post} />)}</div>
-    ) : (
-      <p class="empty">No thoughts yet. Run <code>npm run new "My first take"</code> ✍️</p>
-    )}
-    {posts.length > 9 && <p style="margin-top:20px"><a href="/posts/">All {posts.length} posts →</a></p>}
 
     {tags.length > 0 && (
       <>
-        <h2 class="section-title">Things I think about</h2>
-        <div class="tag-cloud">{tags.map((t) => <a class="tag" href={`/tags/${slugifyTag(t)}/`}>#{t}</a>)}</div>
+        <div class="section-head"><h2>Topics</h2></div>
+        <div class="tag-cloud">{tags.map((t) => <a class="tag" href={`/tags/${slugifyTag(t)}/`}>{t}</a>)}</div>
       </>
     )}
-  </section>
-  <script>
-    const b = document.getElementById('surprise');
-    b?.addEventListener('click', () => {
-      const slugs: string[] = JSON.parse(b.dataset.slugs || '[]');
-      location.href = `/posts/${slugs[Math.floor(Math.random() * slugs.length)]}/`;
-    });
-  </script>
+  </div>
 </Base>

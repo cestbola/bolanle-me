@@ -179,7 +179,8 @@ function bar(fig, body, spec) {
   let items = [...spec.items];
   if (spec.sort) items.sort((a, b) => (spec.sort === 'asc' ? a.value - b.value : b.value - a.value));
   const hi = new Set(spec.highlight || []);
-  const fill = (d) => (hi.size ? (hi.has(d.label) ? color(1) : color(0)) : color(0));
+  // highlighted bars keep the lead colour; everything else steps back to neutral
+  const fill = (d) => (hi.size && !hi.has(d.label) ? 'var(--bar-muted)' : color(0));
   const vals = items.map((d) => d.value);
   const tipFor = (d) => `<strong>${esc(d.emoji ? `${d.emoji} ` : '')}${esc(d.label)}</strong><br>${esc(fmt(d.value, spec.unit))}${d.note ? `<br><em>${esc(d.note)}</em>` : ''}`;
 
@@ -388,31 +389,30 @@ function donut(fig, body, spec) {
 
 /* ----------------------------------------------------------------- meter */
 
-const MOODS = ['🙅', '🤨', '😐', '🙂', '😍', '🔥'];
 function verdict(gap) {
-  if (gap < 0.06) return ['🧠🤝🧠', 'Brain twins. Are you me?'];
-  if (gap < 0.18) return ['🍿', 'Close enough to share snacks.'];
-  if (gap < 0.35) return ['🤔', 'Respectfully… hmm.'];
-  if (gap < 0.6) return ['🫠', 'Agree to disagree.'];
-  return ['⚔️', 'We are sworn enemies now. (Lovingly.)'];
+  if (gap < 0.06) return 'We’re in near-perfect agreement.';
+  if (gap < 0.18) return 'We broadly agree.';
+  if (gap < 0.35) return 'We see this a little differently.';
+  if (gap < 0.6) return 'We see this quite differently.';
+  return 'We’re at opposite ends on this one.';
 }
 
 function meter(fig, body, spec) {
   const key = `meter:${hash(JSON.stringify(spec))}`;
   const span = spec.max - spec.min;
   const pct = (v) => ((v - spec.min) / span) * 100;
-  const moodFor = (v) => MOODS[Math.min(MOODS.length - 1, Math.floor((pct(v) / 100) * MOODS.length))];
+  const readout = (v) => `${Math.round(pct(v))}`;
 
   const render = () => {
     const saved = store.get(key);
     if (saved != null) return reveal(saved);
     const mid = spec.min + span / 2;
-    const face = h('span', { class: 'meter-face', 'aria-hidden': 'true', text: moodFor(mid) });
+    const face = h('output', { class: 'meter-face', text: readout(mid) });
     const input = h('input', {
       type: 'range', min: spec.min, max: spec.max, step: span / 100, value: mid,
       'aria-label': spec.question,
       oninput: (e) => {
-        face.textContent = moodFor(+e.target.value);
+        face.textContent = readout(+e.target.value);
         input.style.setProperty('--p', `${pct(+e.target.value)}%`);
       },
     });
@@ -421,13 +421,13 @@ function meter(fig, body, spec) {
       h('p', { class: 'meter-q', text: spec.question }),
       h('div', { class: 'meter-row' }, input, face),
       h('div', { class: 'meter-ends' }, h('span', { text: spec.left }), h('span', { text: spec.right })),
-      h('button', { class: 'btn', type: 'button', text: 'Lock in my take 🔒', onclick: () => { store.set(key, +input.value); render(); } }),
+      h('button', { class: 'btn', type: 'button', text: 'Submit my answer', onclick: () => { store.set(key, +input.value); render(); } }),
     );
   };
 
   const reveal = (yours) => {
     const gap = Math.abs(yours - spec.mine) / span;
-    const [emoji, line1] = verdict(gap);
+    const line1 = verdict(gap);
     const pin = (who, v, cls) => h('div', { class: `meter-pin ${cls}`, style: `left:${pct(v)}%` }, h('span', { text: who }));
     body.replaceChildren(
       h('p', { class: 'meter-q', text: spec.question }),
@@ -435,8 +435,8 @@ function meter(fig, body, spec) {
         h('div', { class: 'meter-gap', style: `left:${Math.min(pct(yours), pct(spec.mine))}%;width:${Math.abs(pct(yours) - pct(spec.mine))}%` }),
         pin('you', yours, 'you'), pin('me', spec.mine, 'me')),
       h('div', { class: 'meter-ends' }, h('span', { text: spec.left }), h('span', { text: spec.right })),
-      h('div', { class: 'meter-verdict' }, h('span', { class: 'big', text: emoji }), h('div', {}, h('strong', { text: line1 }), spec.why ? h('p', { text: spec.why }) : null)),
-      h('button', { class: 'btn ghost', type: 'button', text: 'Change my answer', onclick: () => { store.set(key, null); render(); } }),
+      h('div', { class: 'meter-verdict' }, h('strong', { text: `${line1} You: ${readout(yours)} · Me: ${readout(spec.mine)}` }), spec.why ? h('p', { text: spec.why }) : null),
+      h('button', { class: 'btn ghost', type: 'button', text: 'Change answer', onclick: () => { store.set(key, null); render(); } }),
     );
   };
   render();
@@ -451,7 +451,7 @@ function quadrant(fig, body, spec) {
   const moved = (p) => Math.abs(p.ux - p.x) > 0.01 || Math.abs(p.uy - p.y) > 0.01;
   const holder = h('div', { class: spec.draggable ? 'draggable' : '' });
   const hint = h('p', { class: 'viz-hint' });
-  const resetBtn = h('button', { class: 'btn ghost small', type: 'button', text: 'Put them back', onclick: () => { state.forEach((p) => { p.ux = p.x; p.uy = p.y; }); persist(); draw(); } });
+  const resetBtn = h('button', { class: 'btn ghost small', type: 'button', text: 'Reset', onclick: () => { state.forEach((p) => { p.ux = p.x; p.uy = p.y; }); persist(); draw(); } });
   body.replaceChildren(holder, h('div', { class: 'viz-foot' }, hint, resetBtn));
   const persist = () => store.set(key, Object.fromEntries(state.filter(moved).map((p) => [p.name, [p.ux, p.uy]])));
 
@@ -505,7 +505,7 @@ function quadrant(fig, body, spec) {
       const right = cx < W - 120;
       const t = s('text', { x: right ? cx + 13 : cx - 13, y: cy + 4, 'text-anchor': right ? 'start' : 'end', class: 'quad-name' }, gp);
       t.textContent = p.name;
-      gp.addEventListener('pointermove', (ev) => { if (dragging == null) showTip(`<strong>${esc(p.name)}</strong>${moved(p) ? '<br>you moved this one 👀' : ''}`, ev); });
+      gp.addEventListener('pointermove', (ev) => { if (dragging == null) showTip(`<strong>${esc(p.name)}</strong>${moved(p) ? '<br>moved by you' : ''}`, ev); });
       gp.addEventListener('pointerleave', hideTip);
       if (spec.draggable) {
         gp.addEventListener('pointerdown', (ev) => {
@@ -543,8 +543,8 @@ function quadrant(fig, body, spec) {
     };
     const n = state.filter(moved).length;
     hint.textContent = !spec.draggable ? '' : n
-      ? `You moved ${n} of ${state.length}. Bold of you. Hollow dots show where I put them.`
-      : 'Disagree? Drag the dots to where you think they belong.';
+      ? `You repositioned ${n} of ${state.length}. Outlined circles mark my original placement.`
+      : 'Disagree? Drag any point to where you’d place it.';
     resetBtn.hidden = !n;
   }
   responsive(holder, (w) => { W = w; draw(); });
@@ -565,11 +565,11 @@ function guess(fig, body, spec) {
   const { lo, hi: top, ticks } = niceTicks(spec.min ?? Math.min(vmin - pad, vmin >= 0 ? 0 : vmin - pad), spec.max ?? vmax + pad);
 
   const holder = h('div', { class: 'draggable' });
-  const btn = h('button', { class: 'btn', type: 'button', text: 'Show me the real line 👀', onclick: () => { revealed = true; persist(); draw(); } });
+  const btn = h('button', { class: 'btn', type: 'button', text: 'Reveal the data', onclick: () => { revealed = true; persist(); draw(); } });
   const again = h('button', { class: 'btn ghost small', type: 'button', text: 'Try again', onclick: () => { revealed = false; for (let i = from; i < n; i++) guesses[i] = null; persist(); draw(); } });
   const msg = h('p', { class: 'viz-hint' });
   body.replaceChildren(
-    h('p', { class: 'meter-q', text: spec.prompt || 'How do you think the rest of this goes? Draw it! ✏️' }),
+    h('p', { class: 'meter-q', text: spec.prompt || 'How do you think the rest of this goes? Draw your estimate.' }),
     holder,
     h('div', { class: 'viz-foot' }, msg, btn, again),
   );
@@ -600,7 +600,7 @@ function guess(fig, body, spec) {
       s('rect', { x: x(from - 1), y: m.t, width: x(n - 1) - x(from - 1), height: H - m.t - m.b, class: 'draw-zone' }, svg);
       if (guesses[from] == null) {
         const t = s('text', { x: (x(from - 1) + x(n - 1)) / 2, y: (m.t + H - m.b) / 2, 'text-anchor': 'middle', class: 'draw-hint' }, svg);
-        t.textContent = 'draw here ✏️';
+        t.textContent = 'Draw your estimate here';
       }
     }
     s('path', { d: linePath(values.slice(0, from).map((v, i) => [x(i), y(v)])), class: 'line still', stroke: color(0) }, svg);
@@ -644,12 +644,9 @@ function guess(fig, body, spec) {
       const errs = values.slice(from).map((v, i) => Math.abs(v - guesses[from + i]) / (top - lo));
       const avg = errs.reduce((a, b) => a + b, 0) / errs.length;
       const score = Math.round(clamp(100 - avg * 200, 0, 100));
-      msg.textContent = score > 85 ? `${score}/100 — psychic. Genuinely unsettling. 🔮`
-        : score > 60 ? `${score}/100 — solid instincts. 🎯`
-          : score > 35 ? `${score}/100 — you saw it coming… sort of. 🌤️`
-            : `${score}/100 — reality said “nope”. 🙃`;
+      msg.textContent = `Accuracy: ${score}/100. ${score > 85 ? 'Remarkably close.' : score > 60 ? 'Good instincts.' : score > 35 ? 'Partly right.' : 'The data went another way.'}`;
     } else {
-      msg.textContent = done ? 'Happy with it? Hit reveal.' : `Draw from ${labels[from]} to ${labels[n - 1]}.`;
+      msg.textContent = done ? 'When you’re ready, reveal the data.' : `Draw from ${labels[from]} to ${labels[n - 1]}.`;
     }
   }
   responsive(holder, (w) => { W = w; draw(); });
@@ -657,7 +654,6 @@ function guess(fig, body, spec) {
 
 /* ------------------------------------------------------------------ tier */
 
-const TIER_COLORS = ['#ff6b6b', '#ff9f43', '#feca57', '#1dd1a1', '#54a0ff', '#a29bfe', '#c8d6e5'];
 
 function tier(fig, body, spec) {
   const key = `tier:${hash(JSON.stringify(spec))}`;
@@ -687,7 +683,7 @@ function tier(fig, body, spec) {
         class: 'tier-row', 'data-tier': t.name,
         onclick: (e) => { if (selected && !e.target.closest('.chip')) move(selected, t.name); },
       },
-      h('div', { class: 'tier-name', style: `background:${TIER_COLORS[ti % TIER_COLORS.length]}`, text: t.name }),
+      h('div', { class: `tier-name${ti / Math.max(1, spec.tiers.length - 1) >= 0.5 ? ' faded' : ''}`, style: `--t:${ti / Math.max(1, spec.tiers.length - 1)}`, text: t.name }),
       h('div', { class: 'tier-items' }, order.filter((it) => yours[it] === t.name).map((it) => {
         const diff = compare && yours[it] !== mine[it];
         const chip = h('button', {
@@ -700,14 +696,14 @@ function tier(fig, body, spec) {
       })));
       return row;
     }));
-    cmpBtn.textContent = compare ? 'Hide comparison' : 'Compare with mine ⚖️';
+    cmpBtn.textContent = compare ? 'Hide comparison' : 'Compare with mine';
     cmpBtn.hidden = !changed.length;
     resetBtn.hidden = !changed.length;
     msg.textContent = selected
       ? `Now tap a tier to drop “${selected}” in.`
       : changed.length
-        ? `We agree on ${order.length - changed.length} of ${order.length}. ${changed.length > order.length / 2 ? 'This friendship is being tested. 😤' : 'Not bad!'}`
-        : 'This is my ranking. Fight me: drag (or tap) things to re-rank them.';
+        ? `We agree on ${order.length - changed.length} of ${order.length} placements.`
+        : 'This is my ranking. Drag items (or tap, then tap a tier) to make your own.';
   }
 
   function dragChip(chip, item) {
@@ -761,7 +757,7 @@ export function mountChart(fig, spec) {
     MOUNTS[spec.type](fig, body, spec);
     if (spec.caption && !fig.querySelector('.viz-caption')) fig.append(h('p', { class: 'viz-caption', text: spec.caption }));
   } catch (err) {
-    body.replaceChildren(h('p', { class: 'viz-error', text: `This chart tripped over itself: ${err.message}` }));
+    body.replaceChildren(h('p', { class: 'viz-error', text: `This chart couldn’t be drawn: ${err.message}` }));
     console.error(err);
   }
 }

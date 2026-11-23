@@ -8,29 +8,29 @@ const md = (t: string) =>
   t.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]!).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 ---
 <Base title="About" description={ME.shortBio}>
-  <section class="wrap about">
-    <div class="about-top">
-      <Avatar size={220} />
+  <div class="wrap">
+    <section class="about-top">
+      <Avatar size={200} framed />
       <div>
-        <p class="hand about-hi">hello, I'm</p>
+        <span class="kicker">About</span>
         <h1>{ME.name}</h1>
         <p class="about-short">{ME.shortBio}</p>
         {ME.links.length > 0 && (
           <div class="about-links">{ME.links.map((l) => <a class="tag" href={l.href} rel="me noopener" target="_blank">{l.label} ↗</a>)}</div>
         )}
       </div>
-    </div>
+    </section>
 
     {ME.facts.length > 0 && (
-      <ul class="facts">{ME.facts.map((f, i) => <li style={`--r:${[-2, 1.5, -1, 2][i % 4]}deg`}><span aria-hidden="true">{f.emoji}</span>{f.text}</li>)}</ul>
+      <ul class="facts">{ME.facts.map((f) => <li><b>{f.label}</b><span>{f.text}</span></li>)}</ul>
     )}
 
     <div class="prose">
       {ME.bio.map((p) => <p set:html={md(p)} />)}
-      <h2>About this blog</h2>
-      <p>Most posts come with <strong>interactive charts</strong>, and some of them argue back. Slide the hot-take meters, drag dots around the 2×2s, draw your guess before the real line shows up, or reshuffle a tier list and see how much we disagree.</p>
-      <blockquote>Your answers stay in your own browser. Nobody's keeping score. (Except the charts. The charts are keeping score.)</blockquote>
-      <p>Want to make one? Have a play in the <a href="/chart-lab/">Chart Lab</a>.</p>
+      <h2>About this site</h2>
+      <p>Most posts include <strong>interactive charts</strong>. Some ask for your view: place yourself on a scale, move points on a 2×2, sketch your estimate before the data is revealed, or rearrange a ranking and compare it with mine.</p>
+      <p>Your answers are stored only in your own browser. Nothing is collected or tracked.</p>
+      <p>The charts are built in the <a href="/chart-lab/">Chart Lab</a>, which you're welcome to explore.</p>
     </div>
-  </section>
+  </div>
 </Base>

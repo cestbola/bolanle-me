@@ -2,8 +2,9 @@
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Avatar from '../../components/Avatar.astro';
+import Intensity from '../../components/Intensity.astro';
 import { ME } from '../../site';
-import { getPosts, fmtDate, readingTime, spiceLabel, slugifyTag } from '../../lib/posts';
+import { getPosts, fmtDate, readingTime, slugifyTag } from '../../lib/posts';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -14,80 +15,45 @@ export async function getStaticPaths() {
 }
 const { post, newer, older } = Astro.props;
 const { Content } = await render(post);
-const { title, date, description, tldr, tags, mood, spice } = post.data;
+const { title, date, description, tldr, tags, spice } = post.data;
 ---
 <Base title={title} description={description ?? tldr}>
   <article class="wrap">
     <header class="post-head">
-      <span class="mood-big" aria-hidden="true">{mood}</span>
+      {tags[0] && <a class="kicker" href={`/tags/${slugifyTag(tags[0])}/`} style="text-decoration:none">{tags[0]}</a>}
       <h1>{title}</h1>
+      {description && <p class="dek">{description}</p>}
       <div class="meta">
+        <span>By <a href="/about/">{ME.name}</a></span>
         <time datetime={date.toISOString()}>{fmtDate(date)}</time>
         <span>{readingTime(post.body)} min read</span>
-        <span title={`Spice level ${spice}/5`}>{spiceLabel(spice)}</span>
+        <Intensity level={spice} />
       </div>
-      {tags.length > 0 && <div style="margin-top:12px">{tags.map((t) => <a class="tag" href={`/tags/${slugifyTag(t)}/`}>#{t}</a>)}</div>}
-      {tldr && <p class="tldr"><b>tl;dr</b>{tldr}</p>}
+      {tldr && <p class="tldr"><b>In short</b>{tldr}</p>}
     </header>
 
     <div class="prose">
       <Content />
     </div>
 
-    <section class="reactions" data-key={post.id}>
-      <p>How'd this land?</p>
-      <div class="reaction-row">
-        {['🔥', '🤯', '😂', '🤔', '🙄', '💖'].map((e) => <button class="reaction" type="button" data-emoji={e}>{e}</button>)}
-      </div>
-    </section>
+    {tags.length > 0 && <div class="post-tags">{tags.map((t) => <a class="tag" href={`/tags/${slugifyTag(t)}/`}>{t}</a>)}</div>}
 
     <aside class="author-card">
-      <Avatar size={84} />
+      <Avatar size={64} round />
       <div>
-        <p class="hand">written by</p>
         <a class="author-name" href="/about/">{ME.name}</a>
         <p>{ME.shortBio}</p>
       </div>
     </aside>
 
     <nav class="post-nav" aria-label="More posts">
-      {older && <a href={`/posts/${older.id}/`}>← {older.data.title}</a>}
-      {newer && <a class="next" href={`/posts/${newer.id}/`}>{newer.data.title} →</a>}
+      {older && <a href={`/posts/${older.id}/`}><small>Previous</small><span>{older.data.title}</span></a>}
+      {newer && <a class="next" href={`/posts/${newer.id}/`}><small>Next</small><span>{newer.data.title}</span></a>}
     </nav>
   </article>
 
   <script>
     import { renderAll } from '../../charts/engine.js';
     renderAll();
-
-    // Reactions: a private little confetti moment (remembered in your browser only).
-    const box = document.querySelector<HTMLElement>('.reactions')!;
-    const key = `bolanle:react:${box.dataset.key}`;
-    const mark = (emoji: string | null) =>
-      box.querySelectorAll<HTMLElement>('.reaction').forEach((b) => b.classList.toggle('on', b.dataset.emoji === emoji));
-    try { mark(localStorage.getItem(key)); } catch {}
-    box.addEventListener('click', (e) => {
-      const b = (e.target as HTMLElement).closest<HTMLElement>('.reaction');
-      if (!b) return;
-      const emoji = b.dataset.emoji!;
-      const on = b.classList.contains('on');
-      mark(on ? null : emoji);
-      try { on ? localStorage.removeItem(key) : localStorage.setItem(key, emoji); } catch {}
-      if (on || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      const r = b.getBoundingClientRect();
-      for (let i = 0; i < 12; i++) {
-        const p = document.createElement('span');
-        p.className = 'burst';
-        p.textContent = emoji;
-        const a = (Math.PI * 2 * i) / 12;
-        p.style.left = `${r.left + r.width / 2 - 12}px`;
-        p.style.top = `${r.top}px`;
-        p.style.setProperty('--dx', `${Math.cos(a) * (60 + Math.random() * 60)}px`);
-        p.style.setProperty('--dy', `${Math.sin(a) * (60 + Math.random() * 60) - 40}px`);
-        p.style.setProperty('--r', `${Math.random() * 120 - 60}deg`);
-        document.body.append(p);
-        setTimeout(() => p.remove(), 950);
-      }
-    });
   </script>
 </Base>

@@ -1,0 +1,8 @@
+---
+// The post's "spice" (0–5) shown as five small squares.
+interface Props { level: number }
+const { level } = Astro.props;
+---
+<span class="intensity" title={`Intensity ${level} of 5`} aria-label={`Intensity ${level} of 5`} role="img">
+  {[1, 2, 3, 4, 5].map((n) => <i class={n <= level ? 'on' : undefined} />)}
+</span>
