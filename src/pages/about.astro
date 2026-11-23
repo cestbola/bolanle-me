@@ -3,9 +3,15 @@ import Base from '../layouts/Base.astro';
 import Avatar from '../components/Avatar.astro';
 import { ME } from '../site';
 
+const escape = (t: string) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+// Business names become links wherever they appear, once their website is set in site.ts
+const linkVentures = (html: string) =>
+  ME.ventures.reduce(
+    (out, v) => (v.href ? out.split(escape(v.name)).join(`<a href="${escape(v.href)}" rel="noopener" target="_blank">${escape(v.name)}</a>`) : out),
+    html,
+  );
 // tiny **bold** support for bio paragraphs
-const md = (t: string) =>
-  t.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]!).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+const md = (t: string) => linkVentures(escape(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>'));
 ---
 <Base title="About" description={ME.shortBio}>
   <div class="wrap">
@@ -14,7 +20,7 @@ const md = (t: string) =>
       <div>
         <span class="kicker">About</span>
         <h1>{ME.name}</h1>
-        <p class="about-short">{ME.shortBio}</p>
+        <p class="about-short" set:html={linkVentures(escape(ME.shortBio))} />
         {ME.links.length > 0 && (
           <div class="about-links">{ME.links.map((l) => <a class="tag" href={l.href} rel="me noopener" target="_blank">{l.label} ↗</a>)}</div>
         )}
@@ -22,7 +28,7 @@ const md = (t: string) =>
     </section>
 
     {ME.facts.length > 0 && (
-      <ul class="facts">{ME.facts.map((f) => <li><b>{f.label}</b><span>{f.text}</span></li>)}</ul>
+      <ul class="facts">{ME.facts.map((f) => <li><b>{f.label}</b><span set:html={linkVentures(escape(f.text))} /></li>)}</ul>
     )}
 
     <div class="prose">

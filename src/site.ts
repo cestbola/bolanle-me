@@ -14,17 +14,24 @@ export const ME = {
   photo: '/me.jpg',
   photoAlt: 'Bolanle, seen from behind, sitting on a bench above the clouds at sunrise',
   // One line for the home page and post footers.
-  shortBio: 'PLACEHOLDER: a one-line bio. Who you are and what you think about.',
+  shortBio: 'Portfolio Manager of a public multi-asset portfolio, and founder of Scentâme and Perfume Foundry.',
   // The About page. Each string is a paragraph; **bold** works.
+  // Names listed under `ventures` below become links automatically wherever they appear here.
   bio: [
-    'PLACEHOLDER: a paragraph or two about you. What you do, where you are, what you can’t stop thinking about.',
-    'PLACEHOLDER: what this blog is for, and what readers can expect.',
+    'I’m a **Portfolio Manager** running a public multi-asset portfolio, and the founder of Scentâme and Perfume Foundry.',
+    'This blog is where I think out loud about whatever I’m curious about, from markets and AI to stars and food, and turn the numbers into charts you can play with.',
+  ],
+  // Your businesses. Add each website's address to `href` and the name becomes a link
+  // on the About page. Leave `href` empty to show the name without a link.
+  ventures: [
+    { name: 'Scentâme', href: '' },
+    { name: 'Perfume Foundry', href: '' },
   ],
   // Quick facts on the About page. Delete any you don’t want.
   facts: [
-    { label: 'Based in', text: 'PLACEHOLDER' },
-    { label: 'Work', text: 'PLACEHOLDER' },
-    { label: 'Writing about', text: 'PLACEHOLDER' },
+    { label: 'Day job', text: 'Portfolio Manager, public multi-asset portfolio' },
+    { label: 'Founder', text: 'Scentâme · Perfume Foundry' },
+    { label: 'Writing about', text: 'Markets, AI, science, food and anything else I can chart' },
   ],
   // Optional links. Remove lines you don’t use.
   links: [
