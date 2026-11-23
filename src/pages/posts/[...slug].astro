@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import Avatar from '../../components/Avatar.astro';
 import Intensity from '../../components/Intensity.astro';
 import { ME } from '../../site';
+import { withLinks } from '../../lib/bio';
 import { getPosts, fmtDate, readingTime, slugifyTag } from '../../lib/posts';
 
 export async function getStaticPaths() {
@@ -42,7 +43,7 @@ const { title, date, description, tldr, tags, spice } = post.data;
       <Avatar size={64} round />
       <div>
         <a class="author-name" href="/about/">{ME.name}</a>
-        <p>{ME.shortBio}</p>
+        <p set:html={withLinks(ME.shortBio)} />
       </div>
     </aside>
 

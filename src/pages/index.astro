@@ -5,6 +5,7 @@ import ThoughtMap from '../components/ThoughtMap.astro';
 import Avatar from '../components/Avatar.astro';
 import { getPosts, slugifyTag } from '../lib/posts';
 import { SITE, ME } from '../site';
+import { withLinks } from '../lib/bio';
 
 const posts = await getPosts();
 const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
@@ -15,7 +16,7 @@ const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
       <div>
         <span class="kicker">{SITE.name}</span>
         <h1>Thinking out loud, <span class="hl">in charts.</span></h1>
-        <p>I'm {ME.name}. {ME.shortBio}</p>
+        <p set:html={withLinks(`I'm ${ME.name}. ${ME.shortBio}`)} />
         <div class="hero-actions">
           {posts[0] && <a class="btn" href={`/posts/${posts[0].id}/`}>Read the latest</a>}
           <a class="btn ghost" href="/about/">About me</a>

@@ -22,10 +22,10 @@ export const ME = {
     'This blog is where I think out loud about whatever I’m curious about, from markets and AI to stars and food, and turn the numbers into charts you can play with.',
   ],
   // Your businesses. Add each website's address to `href` and the name becomes a link
-  // on the About page. Leave `href` empty to show the name without a link.
+  // on the home page, the About page and the author card on every post. Leave `href` empty to show the name without a link.
   ventures: [
-    { name: 'Scentâme', href: '' },
-    { name: 'Perfume Foundry', href: '' },
+    { name: 'Scentâme', href: 'https://scentame.com' },
+    { name: 'Perfume Foundry', href: 'https://perfumefoundry.ai' },
   ],
   // Quick facts on the About page. Delete any you don’t want.
   facts: [
