@@ -305,6 +305,11 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.12; let
 .quad-pt:hover .dot, .quad-pt:focus .dot, .quad-pt.active .dot { r: 10; }
 .quad-pt:focus { outline: none; }
 .quad-pt:focus .dot { stroke: var(--ink); }
+.quad-num { font-size: 10.5px !important; font-weight: 700; fill: #141310 !important; pointer-events: none; }
+.quad-pt.moved .quad-num { fill: #fff !important; }
+.quad-key { margin: 6px 0 0; padding-left: 22px; font-size: .85rem; color: var(--ink-2); columns: 2; column-gap: 20px; }
+.quad-key li { break-inside: avoid; padding: 1px 0; }
+.quad-key li.moved { color: var(--ink); font-weight: 600; }
 .quad-ghost { fill: none; stroke: var(--muted); stroke-width: 1.25; }
 .quad-trail { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 3; }
 

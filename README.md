@@ -66,3 +66,13 @@ Every type also accepts `title` and `caption`. Full examples for each type are i
 
 `.github/workflows/deploy.yml` builds and publishes to **GitHub Pages** on every push to `main`. One-time setup: repo **Settings → Pages → Source: GitHub Actions**. For the custom domain, add `bolanle.me` under Settings → Pages and point your DNS at GitHub Pages.
 (Netlify/Vercel/Cloudflare Pages also work out of the box: build command `npm run build`, output `dist`.)
+
+## Editing without installing anything
+
+You can do everything from the GitHub website:
+
+- **Your profile:** open `src/site.ts`, click the pencil icon, edit the text, then **Commit changes**.
+- **Your photo:** go to the `public` folder → **Add file → Upload files**, upload a photo named `me.jpg`, and commit.
+- **A new post:** go to `src/content/posts` → **Add file → Create new file**, name it `my-post.md`, and copy the top section (between the `---` lines) from an existing post.
+
+Once the site is deployed from `main`, every commit there republishes the site within a couple of minutes.

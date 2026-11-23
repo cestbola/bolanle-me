@@ -199,14 +199,15 @@ function bar(fig, body, spec) {
     items.forEach((d, i) => {
       const y = i * rowH;
       const g = s('g', { class: 'bar-row' }, svg);
-      const lbl = s('text', { x: x(0) + (d.value < 0 ? -2 : 0), y: y + 15, class: 'bar-label', 'text-anchor': d.value < 0 ? 'end' : 'start' }, g);
+      const lbl = s('text', { x: 0, y: y + 15, class: 'bar-label' }, g);
       lbl.textContent = `${d.emoji ? `${d.emoji} ` : ''}${d.label}`;
       const x0 = Math.min(x(0), x(d.value));
       const bw = Math.max(2, Math.abs(x(d.value) - x(0)));
       s('rect', { x: x0, y: y + 22, width: bw, height: 18, rx: 4, fill: fill(d), class: 'bar', style: `--d:${i * 60}ms` }, g);
-      const vt = s('text', { x: d.value < 0 ? x0 - 6 : x0 + bw + 6, y: y + 36, class: 'bar-value', 'text-anchor': d.value < 0 ? 'end' : 'start' }, g);
+      const vt = s('text', { x: d.value < 0 ? x(0) + 6 : x0 + bw + 6, y: y + 36, class: 'bar-value' }, g);
       vt.textContent = fmt(d.value, spec.unit);
       const hit = s('rect', { x: 0, y, width: w, height: rowH, class: 'hit' }, g);
+      if (lo < 0) s('line', { x1: x(0), x2: x(0), y1: y + 18, y2: y + rowH - 4, class: 'baseline' }, g);
       hit.addEventListener('pointermove', (ev) => showTip(tipFor(d), ev));
       hit.addEventListener('pointerleave', hideTip);
     });
@@ -461,8 +462,9 @@ function quadrant(fig, body, spec) {
   const R = spec.range;
   const m = 16; // side margin
   const mt = 30; // room for the top label
-  const mb = 50; // room for the bottom labels
+  const narrow = () => W < 520;
   const geo = () => {
+    const mb = narrow() ? 68 : 50; // room for the bottom labels
     const H = clamp(W * 0.85, 320, 520);
     const ph = H - mt - mb;
     return {
@@ -489,7 +491,7 @@ function quadrant(fig, body, spec) {
     lab(`↑ ${spec.yHigh}`, px(0), top - 10, 'middle');
     lab(`↓ ${spec.yLow}`, px(0), bottom + 20, 'middle');
     lab(`← ${spec.xLow}`, m, bottom + 42, 'start');
-    lab(`${spec.xHigh} →`, W - m, bottom + 42, 'end');
+    lab(`${spec.xHigh} →`, W - m, bottom + (narrow() ? 60 : 42), 'end');
 
     for (const p of state) {
       if (!moved(p)) continue;
@@ -501,10 +503,16 @@ function quadrant(fig, body, spec) {
       const cx = px(p.ux);
       const cy = py(p.uy);
       s('circle', { cx, cy, r: 18, class: 'hit' }, gp);
-      s('circle', { cx, cy, r: 8, fill: moved(p) ? color(1) : color(0), class: 'dot' }, gp);
-      const right = cx < W - 120;
-      const t = s('text', { x: right ? cx + 13 : cx - 13, y: cy + 4, 'text-anchor': right ? 'start' : 'end', class: 'quad-name' }, gp);
-      t.textContent = p.name;
+      s('circle', { cx, cy, r: narrow() ? 10 : 8, fill: moved(p) ? color(1) : color(0), class: 'dot' }, gp);
+      const right = cx + 13 + p.name.length * 7 < W - 4; // flip the label left if it would overflow
+      if (narrow()) {
+        // phones: number the dots and list the names in a key below
+        const num = s('text', { x: cx, y: cy + 3.5, 'text-anchor': 'middle', class: 'quad-num' }, gp);
+        num.textContent = i + 1;
+      } else {
+        const t = s('text', { x: right ? cx + 13 : cx - 13, y: cy + 4, 'text-anchor': right ? 'start' : 'end', class: 'quad-name' }, gp);
+        t.textContent = p.name;
+      }
       gp.addEventListener('pointermove', (ev) => { if (dragging == null) showTip(`<strong>${esc(p.name)}</strong>${moved(p) ? '<br>moved by you' : ''}`, ev); });
       gp.addEventListener('pointerleave', hideTip);
       if (spec.draggable) {
@@ -541,6 +549,10 @@ function quadrant(fig, body, spec) {
       persist();
       draw();
     };
+    holder.querySelector('.quad-key')?.remove();
+    if (narrow()) {
+      holder.append(h('ol', { class: 'quad-key' }, state.map((p) => h('li', { class: moved(p) ? 'moved' : null, text: p.name }))));
+    }
     const n = state.filter(moved).length;
     hint.textContent = !spec.draggable ? '' : n
       ? `You repositioned ${n} of ${state.length}. Outlined circles mark my original placement.`
