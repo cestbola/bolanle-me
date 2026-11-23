@@ -14,7 +14,7 @@ Five years later, there's a new candidate for "the thing that will transform how
 
 ## What email actually costs
 
-The most-quoted estimate is old but still striking. In 2012 the McKinsey Global Institute estimated that the average knowledge worker spends more than a quarter of the week on email.
+The most-quoted estimate is old but still striking. In 2012 the McKinsey Global Institute, drawing on survey data from 2009, estimated that managers and professionals spend about 28% of their working week on email.
 
 ```chart
 type: bar
@@ -23,25 +23,25 @@ unit: "%"
 sort: desc
 highlight: Reading and answering email
 data:
-  - { label: Role-specific work, value: 39, note: "The job you were actually hired to do" }
+  - { label: Role-specific tasks, value: 39, note: "The job you were actually hired to do" }
   - { label: Reading and answering email, value: 28 }
-  - { label: Searching for information and colleagues, value: 19 }
+  - { label: Searching and gathering information, value: 19, note: "Including tracking down colleagues who can help" }
   - { label: Communicating and collaborating internally, value: 14 }
 caption: "Source: McKinsey Global Institute, The Social Economy (2012). Estimates for “interaction workers”."
 ```
 
-It hasn't got better. Microsoft's 2025 Work Trend Index found the average employee receives **117 emails a day**, on top of 153 Teams messages, and that 40% of people check their inbox before 6 a.m.
+It hasn't got better. A 2025 Microsoft Work Trend Index report found the average worker receives **117 emails a day**, on top of 153 Teams messages each weekday. And 40% of people who are online at 6 a.m. are already going through their email.
 
-Yet email is also infrastructure. More than 4.4 billion people use it. It's how you reset a password, receive an invoice, reach a stranger or leave a paper trail. Here's Radicati's count of how many emails are sent and received every day. The last three years are forecasts. **Before you look, sketch where you think it's heading.**
+Yet email is also infrastructure. Radicati estimates there are around 4.7 billion email users in 2026. It's how you reset a password, receive an invoice, reach a stranger or leave a paper trail. Here's Radicati's estimate of how many emails are sent and received every day. Everything from 2025 on is a forecast. **Before you look, sketch where you think it's heading.**
 
 ```chart
 type: guess
 title: Emails sent and received worldwide per day
-prompt: You can see 2023–2025. Draw your guess for 2026–2028, then reveal Radicati's forecast.
+prompt: You can see 2023–2024. Draw your guess for 2025–2028, then reveal Radicati's forecast.
 unit: bn
 x: ["2023", "2024", "2025", "2026", "2027", "2028"]
 values: [347.3, 361.6, 376.4, 392.5, 408.2, 424.2]
-reveal_from: 3
+reveal_from: 2
 min: 300
 max: 460
 caption: "Source: Radicati Group, Email Statistics Reports 2023–2027 and 2024–2028. 2025 onwards are forecasts."
@@ -59,17 +59,17 @@ title: Five studies, five very different answers
 unit: "%"
 sort: desc
 data:
-  - { label: "Professional writing tasks", value: 40, note: "Finished ~40% faster, quality rated ~18% higher (Noy & Zhang, Science, 2023)" }
-  - { label: "Consultants, tasks AI is good at", value: 25, note: "25% faster and 12% more tasks done, but worse on tasks outside AI's strengths (Dell'Acqua et al., 2023)" }
-  - { label: "Customer support agents", value: 14, note: "14% more issues resolved per hour, biggest gains for newer agents (Brynjolfsson, Li & Raymond)" }
-  - { label: "Danish workers, self-reported", value: 2.8, note: "Average share of work hours saved, across 25,000 workers (Humlum & Vestergaard, 2025)" }
-  - { label: "Experienced software developers", value: -19, note: "Took 19% longer with AI, while believing it made them ~20% faster (METR, 2025)" }
+  - { label: "Short professional writing tasks", value: 40, note: "Finished ~40% faster, quality rated ~18% higher, in short simulated tasks (Noy & Zhang, Science, 2023)" }
+  - { label: "Consultants, tasks AI is good at", value: 25, note: "25% faster and 12% more tasks done, but 19 percentage points less likely to be correct on tasks outside AI's strengths (Dell'Acqua et al., 2023)" }
+  - { label: "Customer support agents", value: 14, note: "14% more issues resolved per hour, and 34% for newer, less-skilled agents (Brynjolfsson, Li & Raymond, QJE 2025)" }
+  - { label: "Danish workers, self-reported", value: 2.8, note: "Average time saved, as reported by chatbot users, in a survey of 25,000 Danish workers. No measurable effect on earnings or hours (Humlum & Vestergaard, 2025)" }
+  - { label: "Experienced software developers", value: -19, note: "Took 19% longer with AI, while estimating afterwards that AI had cut their time by about 20%. METR has since said this may not reflect AI's effect today (METR, 2025)" }
 caption: "Positive = faster or more output. The studies measure different things, so compare the direction more than the size."
 ```
 
-The pattern is consistent across the research. AI gives big gains on **well-defined tasks, for less experienced people, inside the zone where the model is reliable**. At the scale of a whole job or a whole economy, the gains shrink to a few percent. And in at least one careful trial, experts got slower while feeling faster.
+The pattern across these studies is clear. AI gives big gains on **well-defined tasks, for less experienced people, inside the zone where the model is reliable**. At the scale of a whole job or a whole economy, the gains shrink to a few percent. And in at least one careful trial, experts got slower while feeling faster.
 
-> The most interesting number on that chart might be the developers' own estimate: slower by 19%, convinced they were faster by 20%.
+> The most interesting number on that chart might be the developers' own estimate: 19% slower, yet convinced AI had cut their time by 20%.
 
 ## The twist: AI runs on email
 
@@ -116,8 +116,8 @@ why: "I'd give up AI. I'd miss it, but I can't run my life without email. Ask me
 - McKinsey Global Institute, [*The Social Economy*](https://www.mckinsey.com/industries/high-tech/our-insights/the-social-economy) (2012)
 - Microsoft, [*Breaking down the infinite workday*](https://www.microsoft.com/en-us/worklab/work-trend-index/breaking-down-infinite-workday), Work Trend Index special report (2025)
 - The Radicati Group, [*Email Statistics Report, 2024–2028*](https://radicati.com/wp/wp-content/uploads/2024/10/Email-Statistics-Report-2024-2028-Executive-Summary.pdf) and the 2023–2027 edition
-- Noy & Zhang, [*Experimental evidence on the productivity effects of generative AI*](https://economics.mit.edu/news/study-finds-chatgpt-boosts-worker-productivity-some-writing-tasks), Science (2023)
+- Noy & Zhang, [*Experimental evidence on the productivity effects of generative artificial intelligence*](https://doi.org/10.1126/science.adh2586), Science (2023)
 - Dell'Acqua et al., [*Navigating the Jagged Technological Frontier*](https://mitsloan.mit.edu/sites/default/files/2023-10/SSRN-id4573321.pdf) (2023)
-- Brynjolfsson, Li & Raymond, [*Generative AI at Work*](https://www.nber.org/papers/w31161) (NBER)
+- Brynjolfsson, Li & Raymond, [*Generative AI at Work*](https://www.nber.org/papers/w31161), Quarterly Journal of Economics (2025)
 - Humlum & Vestergaard, [*Large Language Models, Small Labor Market Effects*](https://bfi.uchicago.edu/wp-content/uploads/2025/04/BFI_WP_2025-56-3.pdf) (2025)
 - METR, [*Measuring the impact of early-2025 AI on experienced open-source developer productivity*](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) (2025)
