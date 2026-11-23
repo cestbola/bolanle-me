@@ -28,7 +28,7 @@ x: ["1960", "1970", "1980", "1990", "2000", "2010", "2020"]
 series:
   CO₂: [316.9, 325.7, 338.8, 354.5, 369.7, 389.9, 414.2]
 annotations:
-  - { at: "1990", text: "Passes 350" }
+  - { at: "1990", text: "Above 350 since 1988" }
 caption: "Annual mean concentration. Source: NOAA Global Monitoring Laboratory."
 `,
   },
@@ -76,11 +76,11 @@ title: How many people live on Earth?
 prompt: You can see 1950 to 1980. Draw your guess up to 2020.
 unit: bn
 x: ["1950", "1960", "1970", "1980", "1990", "2000", "2010", "2020"]
-values: [2.49, 3.02, 3.69, 4.44, 5.31, 6.15, 6.99, 7.86]
+values: [2.49, 3.02, 3.70, 4.45, 5.33, 6.17, 7.02, 7.89]
 reveal_from: 4
 min: 0
 max: 10
-caption: "Source: UN World Population Prospects."
+caption: "Source: UN World Population Prospects 2024."
 `,
   },
   tier: {

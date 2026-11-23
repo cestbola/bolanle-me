@@ -408,7 +408,9 @@ function meter(fig, body, spec) {
   const key = `meter:${hash(JSON.stringify(spec))}`;
   const span = spec.max - spec.min;
   const pct = (v) => ((v - spec.min) / span) * 100;
-  const readout = (v) => `${Math.round(pct(v))}`;
+  // small ranges (e.g. 0–6) move in whole steps and show the real value; otherwise show 0–100
+  const whole = span <= 20;
+  const readout = (v) => (whole ? `${Math.round(v)}` : `${Math.round(pct(v))}`);
 
   const render = () => {
     const saved = store.get(key);
@@ -416,7 +418,7 @@ function meter(fig, body, spec) {
     const mid = spec.min + span / 2;
     const face = h('output', { class: 'meter-face', text: readout(mid) });
     const input = h('input', {
-      type: 'range', min: spec.min, max: spec.max, step: span / 100, value: mid,
+      type: 'range', min: spec.min, max: spec.max, step: whole ? 1 : span / 100, value: whole ? Math.round(mid) : mid,
       'aria-label': spec.question,
       oninput: (e) => {
         face.textContent = readout(+e.target.value);
