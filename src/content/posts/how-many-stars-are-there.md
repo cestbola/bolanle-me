@@ -18,13 +18,12 @@ title: How many digits does it take to write the number?
 unit: digits
 highlight: Stars in the observable universe
 data:
-  - { label: Stars you can see with the naked eye, value: 4, note: "About 9,100 across the whole sky (Yale Bright Star Catalogue)" }
-  - { label: People on Earth, value: 10, note: "About 8.3 billion (UN projection for 2026)" }
-  - { label: Stars in the Milky Way, value: 12, note: "Somewhere between 100 billion and 400 billion" }
-  - { label: Grains of sand on Earth, value: 19, note: "One estimate: roughly 7.5 × 10¹⁸, counting every beach and desert" }
-  - { label: Stars in the observable universe, value: 23, note: "Roughly 7 × 10²², a 7 followed by 22 zeros (a 2003 estimate by Simon Driver's team at the Australian National University). Estimates vary, and some newer ones are lower" }
+  - { label: Stars you can see with the naked eye, value: 4, note: "About 9,100 across the whole sky (Yale Bright Star Catalogue)", source: "[Sky & Telescope](https://skyandtelescope.org/astronomy-resources/how-many-stars-night-sky-09172014/)" }
+  - { label: People on Earth, value: 10, note: "About 8.3 billion (UN projection for 2026)", source: "[UN World Population Prospects 2024](https://population.un.org/wpp/)" }
+  - { label: Stars in the Milky Way, value: 12, note: "Somewhere between 100 billion and 400 billion", source: "[Space.com](https://www.space.com/25959-how-many-stars-are-in-the-milky-way.html)" }
+  - { label: Grains of sand on Earth, value: 19, note: "One estimate: roughly 7.5 × 10¹⁸, counting every beach and desert", source: "[NPR (2012)](https://www.npr.org/sections/krulwich/2012/09/17/161096233/which-is-greater-the-number-of-sand-grains-on-earth-or-stars-in-the-sky)" }
+  - { label: Stars in the observable universe, value: 23, note: "Roughly 7 × 10²², a 7 followed by 22 zeros (a 2003 estimate by Simon Driver's team at the Australian National University). Estimates vary, and some newer ones are lower", source: "[NPR (2012)](https://www.npr.org/sections/krulwich/2012/09/17/161096233/which-is-greater-the-number-of-sand-grains-on-earth-or-stars-in-the-sky)" }
 caption: "Each extra digit means ten times bigger. The last bar is nearly ten thousand times the one above it."
-source: "[Sky & Telescope](https://skyandtelescope.org/astronomy-resources/how-many-stars-night-sky-09172014/); [UN World Population Prospects 2024](https://population.un.org/wpp/); [Space.com](https://www.space.com/25959-how-many-stars-are-in-the-milky-way.html); [NPR](https://www.npr.org/sections/krulwich/2012/09/17/161096233/which-is-greater-the-number-of-sand-grains-on-earth-or-stars-in-the-sky) (sand, and the 2003 star estimate)"
 ```
 
 ## Sand or stars?

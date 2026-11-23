@@ -182,10 +182,26 @@ function bar(fig, body, spec) {
   // highlighted bars keep the lead colour; everything else steps back to neutral
   const fill = (d) => (hi.size && !hi.has(d.label) ? 'var(--bar-muted)' : color(0));
   const vals = items.map((d) => d.value);
-  const tipFor = (d) => `<strong>${esc(d.emoji ? `${d.emoji} ` : '')}${esc(d.label)}</strong><br>${esc(fmt(d.value, spec.unit))}${d.note ? `<br><em>${esc(d.note)}</em>` : ''}`;
+  // per-bar sources get numbers, shown as [n] after the label and listed under the chart
+  const citeKeys = [];
+  items = items.map((d) => {
+    if (!d.source) return d;
+    const key = JSON.stringify(d.source);
+    if (!citeKeys.includes(key)) citeKeys.push(key);
+    return { ...d, cite: citeKeys.indexOf(key) + 1 };
+  });
+  spec.cites = citeKeys.map((k) => JSON.parse(k));
+  const srcText = (d) => d.source.map((sg) => sg.text).join('');
+  const tipFor = (d) => `<strong>${esc(d.emoji ? `${d.emoji} ` : '')}${esc(d.label)}</strong><br>${esc(fmt(d.value, spec.unit))}${d.note ? `<br><em>${esc(d.note)}</em>` : ''}${d.cite ? `<br><span class="tip-src">[${d.cite}] ${esc(srcText(d))}</span>` : ''}`;
+  const addCite = (textEl, d) => {
+    if (!d.cite) return;
+    const t = s('tspan', { class: 'cite-mark', dx: 4 }, textEl);
+    t.textContent = `[${d.cite}]`;
+  };
 
   const holder = h('div');
-  body.replaceChildren(holder, dataTable(['', spec.unit ? `Value (${spec.unit})` : 'Value'], items.map((d) => [d.label, fmt(d.value)])));
+  const head = ['', spec.unit ? `Value (${spec.unit})` : 'Value', ...(citeKeys.length ? ['Source'] : [])];
+  body.replaceChildren(holder, dataTable(head, items.map((d) => [d.label, fmt(d.value), ...(citeKeys.length ? [d.cite ? `[${d.cite}] ${srcText(d)}` : ''] : [])])));
 
   responsive(holder, (w) => {
     if (spec.vertical) return drawVertical(w);
@@ -201,6 +217,7 @@ function bar(fig, body, spec) {
       const g = s('g', { class: 'bar-row' }, svg);
       const lbl = s('text', { x: 0, y: y + 15, class: 'bar-label' }, g);
       lbl.textContent = `${d.emoji ? `${d.emoji} ` : ''}${d.label}`;
+      addCite(lbl, d);
       const x0 = Math.min(x(0), x(d.value));
       const bw = Math.max(2, Math.abs(x(d.value) - x(0)));
       s('rect', { x: x0, y: y + 22, width: bw, height: 18, rx: 4, fill: fill(d), class: 'bar', style: `--d:${i * 60}ms` }, g);
@@ -235,6 +252,7 @@ function bar(fig, body, spec) {
         transform: rotate ? `rotate(-30 ${cx} ${H - m.b + 18})` : null,
       }, g);
       t.textContent = rotate && d.label.length > 14 ? `${d.label.slice(0, 13)}…` : d.label;
+      addCite(t, d);
       if (d.emoji) {
         const e = s('text', { x: cx, y: y0 - 6, 'text-anchor': 'middle', class: 'emoji' }, g);
         e.textContent = d.emoji;
@@ -777,9 +795,13 @@ export function mountChart(fig, spec) {
   try {
     MOUNTS[spec.type](fig, body, spec);
     if (spec.caption && !fig.querySelector('.viz-caption')) fig.append(h('p', { class: 'viz-caption', text: spec.caption }));
-    if (spec.source && !fig.querySelector('.viz-source')) {
-      fig.append(h('p', { class: 'viz-source' }, h('span', { text: 'Source: ' }),
-        spec.source.map((sg) => (sg.url ? h('a', { href: sg.url, rel: 'noopener', target: '_blank', text: sg.text }) : sg.text))));
+    const link = (sg) => (sg.url ? h('a', { href: sg.url, rel: 'noopener', target: '_blank', text: sg.text }) : sg.text);
+    if (spec.cites?.length && !fig.querySelector('.viz-cites')) {
+      fig.append(h('ol', { class: 'viz-source viz-cites', 'aria-label': 'Sources' },
+        spec.cites.map((segs) => h('li', {}, segs.map(link)))));
+    }
+    if (spec.source && !fig.querySelector('p.viz-source')) {
+      fig.append(h('p', { class: 'viz-source' }, h('span', { text: spec.cites?.length ? 'Also: ' : 'Source: ' }), spec.source.map(link)));
     }
   } catch (err) {
     body.replaceChildren(h('p', { class: 'viz-error', text: `This chart couldn’t be drawn: ${err.message}` }));

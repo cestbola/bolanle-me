@@ -61,13 +61,12 @@ title: Five studies, five very different answers
 unit: "%"
 sort: desc
 data:
-  - { label: "Short professional writing tasks", value: 40, note: "Finished ~40% faster, quality rated ~18% higher, in short simulated tasks (Noy & Zhang, Science, 2023)" }
-  - { label: "Consultants, tasks AI is good at", value: 25, note: "25% faster and 12% more tasks done, but 19 percentage points less likely to be correct on tasks outside AI's strengths (Dell'Acqua et al., 2023)" }
-  - { label: "Customer support agents", value: 14, note: "14% more issues resolved per hour, and 34% for newer, less-skilled agents (Brynjolfsson, Li & Raymond, QJE 2025)" }
-  - { label: "Danish workers, self-reported", value: 2.8, note: "Average time saved, as reported by chatbot users, in a survey of 25,000 Danish workers. No measurable effect on earnings or hours (Humlum & Vestergaard, 2025)" }
-  - { label: "Experienced software developers", value: -19, note: "Took 19% longer with AI, while estimating afterwards that AI had cut their time by about 20%. METR has since said this may not reflect AI's effect today (METR, 2025)" }
+  - { label: "Short professional writing tasks", value: 40, note: "Finished ~40% faster, quality rated ~18% higher, in short simulated tasks (Noy & Zhang, Science, 2023)", source: "[Noy & Zhang, Science (2023)](https://doi.org/10.1126/science.adh2586)" }
+  - { label: "Consultants, tasks AI is good at", value: 25, note: "25% faster and 12% more tasks done, but 19 percentage points less likely to be correct on tasks outside AI's strengths (Dell'Acqua et al., 2023)", source: "[Dell'Acqua et al. (2023)](https://mitsloan.mit.edu/sites/default/files/2023-10/SSRN-id4573321.pdf)" }
+  - { label: "Customer support agents", value: 14, note: "14% more issues resolved per hour, and 34% for newer, less-skilled agents (Brynjolfsson, Li & Raymond, QJE 2025)", source: "[Brynjolfsson, Li & Raymond (2025)](https://www.nber.org/papers/w31161)" }
+  - { label: "Danish workers, self-reported", value: 2.8, note: "Average time saved, as reported by chatbot users, in a survey of 25,000 Danish workers. No measurable effect on earnings or hours (Humlum & Vestergaard, 2025)", source: "[Humlum & Vestergaard (2025)](https://bfi.uchicago.edu/wp-content/uploads/2025/04/BFI_WP_2025-56-3.pdf)" }
+  - { label: "Experienced software developers", value: -19, note: "Took 19% longer with AI, while estimating afterwards that AI had cut their time by about 20%. METR has since said this may not reflect AI's effect today (METR, 2025)", source: "[METR (2025)](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)" }
 caption: "Positive = faster or more output. The studies measure different things, so compare the direction more than the size."
-source: "[Noy & Zhang, Science (2023)](https://doi.org/10.1126/science.adh2586); [Dell'Acqua et al. (2023)](https://mitsloan.mit.edu/sites/default/files/2023-10/SSRN-id4573321.pdf); [Brynjolfsson, Li & Raymond (2025)](https://www.nber.org/papers/w31161); [Humlum & Vestergaard (2025)](https://bfi.uchicago.edu/wp-content/uploads/2025/04/BFI_WP_2025-56-3.pdf); [METR (2025)](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)"
 ```
 
 The pattern across these studies is clear. AI gives big gains on **well-defined tasks, for less experienced people, inside the zone where the model is reliable**.[^dellacqua][^brynjolfsson] At the scale of a whole job or a whole economy, the gains shrink to a few percent.[^humlum] And in at least one careful trial, experts got slower while feeling faster.[^metr]

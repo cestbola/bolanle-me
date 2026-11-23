@@ -208,6 +208,11 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.12; let
 .lab-preview .viz-title::before { content: 'Preview'; }
 .viz-source { margin: 6px 0 0; font-size: .8rem; color: var(--muted); }
 .viz-source a { color: var(--ink-2); text-decoration-thickness: 1px; }
+ol.viz-cites { list-style: none; padding: 0; counter-reset: cite; }
+ol.viz-cites li { counter-increment: cite; }
+ol.viz-cites li::before { content: '[' counter(cite) '] '; font-weight: 600; color: var(--ink-2); }
+.viz-svg .cite-mark { font-size: 10px; font-weight: 600; fill: var(--muted); }
+.viz-tip .tip-src { opacity: .75; font-size: .76rem; }
 .viz-caption { margin: 10px 0 0; font-size: .86rem; color: var(--ink-2); }
 .viz-loading { color: var(--muted); font-size: .9rem; margin: 0; }
 .viz-error { color: #c62f2f; font-weight: 600; margin: 0; }

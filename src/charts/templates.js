@@ -1,7 +1,7 @@
 // Starter specs for the Chart Lab. Each is exactly what you'd paste inside a ```chart block.
 export const TEMPLATES = {
   bar: {
-    blurb: 'Compare amounts. Add a `note` to show on hover, `highlight` to pick out one bar, and `source` (with Markdown links) to cite your data.',
+    blurb: 'Compare amounts. Add a `note` to show on hover, `highlight` to pick out one bar, and `source` (with Markdown links) to cite your data, for the whole chart or for each bar.',
     yaml: `type: bar
 title: How wide is each planet?
 unit: km

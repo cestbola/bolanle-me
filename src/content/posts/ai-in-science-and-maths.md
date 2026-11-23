@@ -22,10 +22,9 @@ title: Protein structures in public databases
 unit: million
 highlight: Predicted by AlphaFold
 data:
-  - { label: Solved by experiment (PDB entries), value: 0.25, note: "247,287 entries in the Protein Data Bank at the end of 2025, built up since 1971. Some are repeat structures of the same protein" }
-  - { label: Predicted by AlphaFold, value: 241, note: "241 million predictions in the AlphaFold Database (version 6), free for anyone to use" }
+  - { label: Solved by experiment (PDB entries), value: 0.25, note: "247,287 entries in the Protein Data Bank at the end of 2025, built up since 1971. Some are repeat structures of the same protein", source: "[RCSB PDB newsletter, Q1 2026](https://cdn.rcsb.org/rcsb-pdb/general_information/news_publications/newsletters/2026q1/deposit.html)" }
+  - { label: Predicted by AlphaFold, value: 241, note: "241 million predictions in the AlphaFold Database (version 6), free for anyone to use", source: "[EMBL-EBI AlphaFold Database release notes](https://www.ebi.ac.uk/pdbe/news/alphafold-database-release-notes)" }
 caption: "The experimental bar is there; it's just about a thousand times shorter."
-source: "[RCSB PDB newsletter, Q1 2026](https://cdn.rcsb.org/rcsb-pdb/general_information/news_publications/newsletters/2026q1/deposit.html); [EMBL-EBI AlphaFold Database release notes](https://www.ebi.ac.uk/pdbe/news/alphafold-database-release-notes)"
 ```
 
 Predictions aren't the same as measurements, and some are much more confident than others. But for many biologists, the first step on a new protein went from "spend a year in the lab" to "look it up".
@@ -58,10 +57,10 @@ unit: multiplications
 highlight: AlphaEvolve (2025)
 data:
   - { label: The schoolbook method, value: 64 }
-  - { label: Strassen's method (1969), value: 49, note: "Strassen's 2×2 trick applied twice. The best known for this case for 56 years" }
-  - { label: AlphaEvolve (2025), value: 48, note: "Works for complex numbers. Each complex multiplication can cost several ordinary ones, so the practical gain is debated. Weeks later, other mathematicians found a 48-step method without complex numbers" }
+  - { label: Strassen's method (1969), value: 49, note: "Strassen's 2×2 trick applied twice. The best known for this case for 56 years", source: "Volker Strassen, “Gaussian elimination is not optimal”, Numerische Mathematik (1969)" }
+  - { label: AlphaEvolve (2025), value: 48, note: "Works for complex numbers. Each complex multiplication can cost several ordinary ones, so the practical gain is debated. Weeks later, other mathematicians found a 48-step method without complex numbers", source: "[Google DeepMind (2025)](https://deepmind.google/discover/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/)" }
 caption: "Fewer multiplications means faster computation, and matrix multiplication runs inside almost everything a computer does, AI included."
-source: "[Google DeepMind, AlphaEvolve (2025)](https://deepmind.google/discover/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/); [Ernest Davis, NYU](https://cs.nyu.edu/~davise/papers/AlphaEvolveNotes.pdf)"
+source: "[Ernest Davis, NYU](https://cs.nyu.edu/~davise/papers/AlphaEvolveNotes.pdf), on the practical gain"
 ```
 
 The same system nudged up the "kissing number" in 11 dimensions, the number of equal spheres that can touch one central sphere, from at least 592 to at least 593.[^alphaevolve][^ieee] A one-sphere improvement sounds tiny. In this corner of maths, it's news.
@@ -75,10 +74,9 @@ type: bar
 title: How often AI beat the leading forecasting system
 unit: "%"
 data:
-  - { label: "GraphCast vs. ECMWF's main forecast (2023)", value: 90, note: "More accurate on 90% of 1,380 test targets (Science, 2023)" }
-  - { label: "GenCast vs. ECMWF's ensemble forecast (2024)", value: 97.2, note: "More skilful on 97.2% of 1,320 targets, and 99.8% beyond 36 hours (Nature, 2024)" }
+  - { label: "GraphCast vs. ECMWF's main forecast (2023)", value: 90, note: "More accurate on 90% of 1,380 test targets (Science, 2023)", source: "[Lam et al., Science (2023)](https://doi.org/10.1126/science.adi2336)" }
+  - { label: "GenCast vs. ECMWF's ensemble forecast (2024)", value: 97.2, note: "More skilful on 97.2% of 1,320 targets, and 99.8% beyond 36 hours (Nature, 2024)", source: "[Price et al., Nature (2024)](https://doi.org/10.1038/s41586-024-08252-9)" }
 caption: "A “target” is one combination of weather variable, such as wind or temperature, and forecast lead time."
-source: "[Lam et al., Science (2023)](https://doi.org/10.1126/science.adi2336); [Price et al., Nature (2024)](https://doi.org/10.1038/s41586-024-08252-9)"
 ```
 
 Each 15-day GenCast forecast takes about 8 minutes on a single AI chip, and the dozens of forecasts in an ensemble run side by side.[^gencastblog] Since 2025, ECMWF has run its own AI forecasting models alongside its physics-based ones.[^ecmwf]

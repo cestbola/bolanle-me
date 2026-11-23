@@ -24,6 +24,7 @@ const toItems = (data, what = 'data') => {
         value: num(d.value, `${what}[${i}].value`),
         ...(d.note ? { note: String(d.note) } : {}),
         ...(d.emoji ? { emoji: String(d.emoji) } : {}),
+        ...(d.source ? { source: parseSource(d.source) } : {}),
       };
     });
   }

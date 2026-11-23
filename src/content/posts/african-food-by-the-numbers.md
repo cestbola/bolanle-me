@@ -18,12 +18,11 @@ title: Share of the world's harvest grown in Africa
 unit: "%"
 sort: desc
 data:
-  - { label: Yams, value: 97.8, note: "Almost all from the West African “yam belt” (FAOSTAT, 2021)" }
-  - { label: Cocoa beans, value: 73.4, note: "About 3.6 million tonnes in the 2022/23 season (ICCO)" }
-  - { label: Cassava, value: 63, note: "Nearly two-thirds of the world's cassava (FAOSTAT, 2023)" }
-  - { label: Sorghum, value: 46, note: "Africa is the largest sorghum-growing region (FAO data, reviewed in 2024)" }
+  - { label: Yams, value: 97.8, note: "Almost all from the West African “yam belt” (FAOSTAT, 2021)", source: "FAOSTAT 2021, via [CGIAR](https://cgspace.cgiar.org/server/api/core/bitstreams/08f76c8f-8b8c-4a18-a5c8-15c3e5fead93/content)" }
+  - { label: Cocoa beans, value: 73.4, note: "About 3.6 million tonnes in the 2022/23 season (ICCO)", source: "[ICCO Quarterly Bulletin, Vol. XLIX No. 4](https://www.icco.org/wp-content/uploads/Production_QBCS-XLIX-No.-4.pdf)" }
+  - { label: Cassava, value: 63, note: "Nearly two-thirds of the world's cassava (FAOSTAT, 2023)", source: "[FAOSTAT](https://www.fao.org/faostat/en/#data/QCL), 2023" }
+  - { label: Sorghum, value: 46, note: "Africa is the largest sorghum-growing region (FAO data, reviewed in 2024)", source: "[Trends in Global Sorghum Production](https://agris.fao.org/search/en/providers/122437/records/67654188829d7ef70f48d837), 2024" }
 caption: "Years differ slightly by crop because each comes from the latest source available."
-source: "FAOSTAT via [CGIAR](https://cgspace.cgiar.org/server/api/core/bitstreams/08f76c8f-8b8c-4a18-a5c8-15c3e5fead93/content) (yams); [ICCO](https://www.icco.org/wp-content/uploads/Production_QBCS-XLIX-No.-4.pdf) (cocoa); [FAOSTAT](https://www.fao.org/faostat/en/#data/QCL) (cassava); [Trends in Global Sorghum Production](https://agris.fao.org/search/en/providers/122437/records/67654188829d7ef70f48d837) (sorghum)"
 ```
 
 Yams are the standout. Africa grows almost all of them,[^cgiar] and one country grows most of those. How much do you think?
