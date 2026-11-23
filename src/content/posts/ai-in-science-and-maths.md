@@ -2,13 +2,13 @@
 title: All the ways AI is moving science and maths
 date: 2026-11-23
 description: Proteins, Olympiad gold, weather forecasts, new materials and a 56-year-old maths record. A tour of what AI has actually done for science so far.
-tldr: AI has predicted a thousand times more protein structures than experiments ever solved, scored gold at the International Mathematical Olympiad, out-forecast the world's best weather model and helped win two Nobel Prizes. Most of these results still need humans to check them.
+tldr: AI has predicted a thousand times more protein structures than experiments ever solved, scored gold at the International Mathematical Olympiad, out-forecast the world's best weather model and was at the heart of two 2024 Nobel Prizes. Most of these results still need humans to check them.
 tags: [ai, science, maths]
 mood: 🔬
 spice: 2
 ---
 
-In October 2024, two of the five Nobel Prizes went to work on artificial intelligence. The **Physics** prize went to John Hopfield and Geoffrey Hinton for the foundations of neural networks. Half of the **Chemistry** prize went to Demis Hassabis and John Jumper of Google DeepMind for AlphaFold, which predicts the shapes of proteins. (The other half went to David Baker, for designing new proteins with computers.)
+In October 2024, work on artificial intelligence won the Nobel Prize in Physics and half of the Nobel Prize in Chemistry. The **Physics** prize went to John Hopfield and Geoffrey Hinton for the foundations of neural networks. Half of the **Chemistry** prize went to Demis Hassabis and John Jumper of Google DeepMind for AlphaFold, which predicts the shapes of proteins. (The other half went to David Baker, for designing new proteins with computers.)
 
 That was the moment AI stopped being a tool *for* science and became part of its story. Here's what it has done so far, in numbers.
 
@@ -18,11 +18,11 @@ Proteins do almost everything in living things, and their shape decides what the
 
 ```chart
 type: bar
-title: Protein structures available to scientists
+title: Protein structures in public databases
 unit: million
 highlight: Predicted by AlphaFold
 data:
-  - { label: Solved by experiment, value: 0.25, note: "247,287 entries in the Protein Data Bank at the end of 2025, built up since 1971" }
+  - { label: Solved by experiment (PDB entries), value: 0.25, note: "247,287 entries in the Protein Data Bank at the end of 2025, built up since 1971. Some are repeat structures of the same protein" }
   - { label: Predicted by AlphaFold, value: 241, note: "241 million predictions in the AlphaFold Database (version 6), free for anyone to use" }
 caption: "The experimental bar is there; it's just about a thousand times shorter. Sources: RCSB PDB, EMBL-EBI AlphaFold Database."
 ```
@@ -44,10 +44,10 @@ min: 0
 max: 6
 labels: ["0", "All 6"]
 mine: 5
-why: "Five. Both scored 35 out of 42, exactly the gold-medal cut-off. Neither solved problem 6, the hardest."
+why: "Five. Both scored 35 out of 42, exactly the gold-medal cut-off. Neither solved problem 6, the hardest. DeepMind's result was officially certified by the Olympiad; OpenAI's was graded by former medallists."
 ```
 
-AI is also starting to move real research maths, not just competition problems. In 2025 DeepMind's AlphaEvolve found a faster way to multiply two 4×4 matrices (grids of numbers) made of complex numbers. The previous record had stood since Volker Strassen's famous method in 1969.
+AI is also starting to move real research maths, not just competition problems. In 2025 DeepMind's AlphaEvolve found a faster way to multiply two 4×4 matrices (grids of numbers) made of complex numbers. The best known method for this case, Volker Strassen's famous 1969 trick applied twice, had stood for 56 years.
 
 ```chart
 type: bar
@@ -56,8 +56,8 @@ unit: multiplications
 highlight: AlphaEvolve (2025)
 data:
   - { label: The schoolbook method, value: 64 }
-  - { label: Strassen's method (1969), value: 49, note: "Held the record for 56 years" }
-  - { label: AlphaEvolve (2025), value: 48, note: "Works for complex numbers. Each complex multiplication can cost several ordinary ones, so the practical gain is debated" }
+  - { label: Strassen's method (1969), value: 49, note: "Strassen's 2×2 trick applied twice. The best known for this case for 56 years" }
+  - { label: AlphaEvolve (2025), value: 48, note: "Works for complex numbers. Each complex multiplication can cost several ordinary ones, so the practical gain is debated. Weeks later, other mathematicians found a 48-step method without complex numbers" }
 caption: "Fewer multiplications means faster computation, and matrix multiplication runs inside almost everything a computer does, AI included. Sources: Google DeepMind; Ernest Davis (NYU)."
 ```
 
@@ -65,7 +65,7 @@ The same system nudged up the "kissing number" in 11 dimensions, the number of e
 
 ## Weather: better forecasts, faster
 
-Weather forecasting has run on physics simulations and supercomputers for decades. The gold standard is the European Centre for Medium-Range Weather Forecasts (ECMWF). DeepMind tested two AI models against ECMWF's best systems across hundreds of combinations of weather variable and forecast length.
+Weather forecasting has run on physics simulations and supercomputers for decades. The gold standard is the European Centre for Medium-Range Weather Forecasts (ECMWF). DeepMind tested two AI models against ECMWF's best systems across more than a thousand combinations of weather variable and forecast length.
 
 ```chart
 type: bar
@@ -77,20 +77,20 @@ data:
 caption: "A “target” is one combination of weather variable, such as wind or temperature, and forecast lead time."
 ```
 
-GenCast produces a 15-day forecast on a single AI chip in about 8 minutes. ECMWF now runs its own AI forecasting model alongside its physics-based one.
+Each 15-day GenCast forecast takes about 8 minutes on a single AI chip, and the dozens of forecasts in an ensemble run side by side. Since 2025, ECMWF has run its own AI forecasting models alongside its physics-based ones.
 
 ## Materials: millions of new crystals
 
-New materials give us better batteries, solar panels and computer chips. In 2023 DeepMind's GNoME predicted **2.2 million** new crystal structures, which DeepMind called the equivalent of nearly 800 years of discovery. Not all of them would hold together in the real world, though. Guess what share were predicted to be stable.
+New materials give us better batteries, solar panels and computer chips. In 2023 DeepMind's GNoME predicted **2.2 million** new crystal structures, which DeepMind called about 800 years' worth of knowledge. But a crystal that looks stable on its own might break down into a mix of other new ones. Guess what share stayed stable even against all the others.
 
 ```chart
 type: meter
 title: Quick quiz
-question: What share of GNoME's 2.2 million new crystals were predicted to be stable?
+question: Of GNoME's 2.2 million new crystals, what share stayed stable even when compared against all the other new ones?
 quiz: true
 labels: ["0%", "100%"]
 mine: 17
-why: "About 17%: roughly 380,000 crystals. That's still about ten times as many stable materials as science knew before. By the time the paper came out, labs around the world had already made 736 of them."
+why: "About 17%: roughly 380,000 crystals. That's almost ten times as many stable materials as earlier computer searches had found. By the time the paper came out, labs around the world had already made 736 of them."
 ```
 
 ## What AI isn't doing (yet)
@@ -107,11 +107,12 @@ It's easy to read all this as "AI is doing science now". It isn't, quite.
 
 ### Sources
 
-- The Nobel Prize, [Physics 2024](https://www.nobelprize.org/prizes/physics/2024/summary/) and [all 2024 prizes](https://www.nobelprize.org/all-nobel-prizes-2024/)
+- The Nobel Prize, [Physics 2024](https://www.nobelprize.org/prizes/physics/2024/summary/) and [Chemistry 2024](https://www.nobelprize.org/prizes/chemistry/2024/summary/)
 - EMBL-EBI, [AlphaFold Database release notes](https://www.ebi.ac.uk/pdbe/news/alphafold-database-release-notes) (v6: 241,070,489 predictions)
 - RCSB PDB, [Data deposition newsletter, Q1 2026](https://cdn.rcsb.org/rcsb-pdb/general_information/news_publications/newsletters/2026q1/deposit.html) (year-end 2025 holdings)
-- Google DeepMind, [Gemini Deep Think achieves gold-medal standard at the IMO](https://deepmind.google/discover/blog/advanced-version-of-gemini-with-deep-think-officially-achieves-gold-medal-standard-at-the-international-mathematical-olympiad/) (2025)
+- Google DeepMind, [Gemini Deep Think achieves gold-medal standard at the IMO](https://deepmind.google/discover/blog/advanced-version-of-gemini-with-deep-think-officially-achieves-gold-medal-standard-at-the-international-mathematical-olympiad/) (2025), and [AI solves IMO problems at silver-medal level](https://deepmind.google/discover/blog/ai-solves-imo-problems-at-silver-medal-level/) (2024)
 - Google DeepMind, [AlphaEvolve](https://deepmind.google/discover/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/) (2025); Ernest Davis, [notes on AlphaEvolve](https://cs.nyu.edu/~davise/papers/AlphaEvolveNotes.pdf); [IEEE Spectrum](https://spectrum.ieee.org/deepmind-alphaevolve)
-- Lam et al., [GraphCast](https://arxiv.org/abs/2212.12794), Science (2023)
-- Price et al., [GenCast](https://deepmind.google/discover/blog/gencast-predicts-weather-and-the-risks-of-extreme-conditions-with-sota-accuracy/), Nature (2024)
+- Lam et al., [GraphCast](https://doi.org/10.1126/science.adi2336), Science (2023)
+- Price et al., [GenCast](https://doi.org/10.1038/s41586-024-08252-9), Nature (2024)
+- ECMWF, [Ensemble AI forecasts become operational](https://www.ecmwf.int/en/about/media-centre/news/2025/ecmwfs-ensemble-ai-forecasts-become-operational) (2025)
 - Merchant et al., [Scaling deep learning for materials discovery](https://www.nature.com/articles/s41586-023-06735-9), Nature (2023), and the [GNoME announcement](https://deepmind.google/discover/blog/millions-of-new-materials-discovered-with-deep-learning/)
