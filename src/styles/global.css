@@ -445,3 +445,13 @@ ol.viz-cites li::before { content: '[' counter(cite) '] '; font-weight: 600; col
 .prose .footnotes li:target { background: var(--sunk); outline: 4px solid var(--sunk); }
 .prose .footnotes p { margin: 0; display: inline; }
 .prose .data-footnote-backref { text-decoration: none; margin-left: 4px; }
+
+/* tables in posts */
+.prose > table {
+  display: block; overflow-x: auto; width: 100%; border-collapse: collapse; margin: 1.6em 0;
+  font: .9rem/1.45 var(--sans); font-variant-numeric: tabular-nums;
+}
+.prose > table th, .prose > table td { padding: 9px 14px 9px 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--rule); min-width: 7.5em; }
+.prose > table th:first-child, .prose > table td:first-child { min-width: 3.5em; font-weight: 600; }
+.prose > table thead th { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); border-bottom: 2px solid var(--ink); }
+.prose > table tbody tr:hover { background: var(--sunk); }

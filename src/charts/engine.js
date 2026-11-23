@@ -426,9 +426,9 @@ function meter(fig, body, spec) {
   const key = `meter:${hash(JSON.stringify(spec))}`;
   const span = spec.max - spec.min;
   const pct = (v) => ((v - spec.min) / span) * 100;
-  // small ranges (e.g. 0–6) move in whole steps and show the real value; otherwise show 0–100
+  // small ranges (e.g. 0–6) move in whole steps; the readout always shows the real value
   const whole = span <= 20;
-  const readout = (v) => (whole ? `${Math.round(v)}` : `${Math.round(pct(v))}`);
+  const readout = (v) => `${Math.round(v)}`;
 
   const render = () => {
     const saved = store.get(key);
