@@ -1,0 +1,16 @@
+---
+// Your photo in a wobbly sticker frame. Falls back to a doodle until public/<photo> exists.
+import { existsSync } from 'node:fs';
+import { ME } from '../site';
+
+interface Props { size?: number; tilt?: boolean; class?: string }
+const { size = 160, tilt = true, class: cls = '' } = Astro.props;
+const hasPhoto = !!ME.photo && existsSync(`public${ME.photo}`);
+---
+<span class:list={['avatar', { tilt }, cls]} style={`--size:${size}px`}>
+  {hasPhoto ? (
+    <img src={ME.photo} alt={ME.photoAlt} width={size} height={size} loading="lazy" decoding="async" />
+  ) : (
+    <span class="avatar-fallback" role="img" aria-label={ME.photoAlt}>{ME.name.charAt(0)}</span>
+  )}
+</span>

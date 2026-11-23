@@ -28,7 +28,7 @@ draft: false    # true = only visible in `npm run dev`
 ---
 ```
 
-Personal bits (name, tagline, homepage sticker) are in `src/site.ts`.
+Personal bits are in `src/site.ts`: your name, bio, fact chips and links (`ME`), plus the site tagline and homepage sticker (`SITE`). Put your photo at `public/me.jpg`; until it exists, a doodle avatar with your initial shows instead.
 
 ## Charts
 

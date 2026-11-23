@@ -1,6 +1,8 @@
 ---
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Avatar from '../../components/Avatar.astro';
+import { ME } from '../../site';
 import { getPosts, fmtDate, readingTime, spiceLabel, slugifyTag } from '../../lib/posts';
 
 export async function getStaticPaths() {
@@ -38,6 +40,15 @@ const { title, date, description, tldr, tags, mood, spice } = post.data;
         {['🔥', '🤯', '😂', '🤔', '🙄', '💖'].map((e) => <button class="reaction" type="button" data-emoji={e}>{e}</button>)}
       </div>
     </section>
+
+    <aside class="author-card">
+      <Avatar size={84} />
+      <div>
+        <p class="hand">written by</p>
+        <a class="author-name" href="/about/">{ME.name}</a>
+        <p>{ME.shortBio}</p>
+      </div>
+    </aside>
 
     <nav class="post-nav" aria-label="More posts">
       {older && <a href={`/posts/${older.id}/`}>← {older.data.title}</a>}
