@@ -39,6 +39,25 @@ const pair = (v, what, fallback) => {
   fail(`"${what}" should be two labels, like [low, high]`);
 };
 
+// `source` is written like Markdown: "[Title](https://…), extra text; [Another](https://…)".
+// It becomes a list of segments so the chart can render real links.
+export function parseSource(src) {
+  if (src == null) return null;
+  const text = Array.isArray(src) ? src.map(String).join('; ') : String(src);
+  const segs = [];
+  const re = /\[([^\]]+)\]\(([^)\s]+)\)/g;
+  let last = 0;
+  let m;
+  while ((m = re.exec(text))) {
+    if (m.index > last) segs.push({ text: text.slice(last, m.index) });
+    if (!/^https?:\/\//.test(m[2])) fail(`source link "${m[2]}" should start with http:// or https://`);
+    segs.push({ text: m[1], url: m[2] });
+    last = re.lastIndex;
+  }
+  if (last < text.length) segs.push({ text: text.slice(last) });
+  return segs;
+}
+
 export function normalize(raw) {
   if (!raw || typeof raw !== 'object') fail('a chart needs at least a "type"');
   const type = String(raw.type || '').toLowerCase();
@@ -47,6 +66,7 @@ export function normalize(raw) {
     type,
     ...(raw.title ? { title: String(raw.title) } : {}),
     ...(raw.caption ? { caption: String(raw.caption) } : {}),
+    ...(raw.source ? { source: parseSource(raw.source) } : {}),
   };
   const unit = raw.unit != null ? String(raw.unit) : '';
 

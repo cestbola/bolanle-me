@@ -1,7 +1,7 @@
 // Starter specs for the Chart Lab. Each is exactly what you'd paste inside a ```chart block.
 export const TEMPLATES = {
   bar: {
-    blurb: 'Compare amounts. Add a `note` to show on hover, and `highlight` to pick out one bar.',
+    blurb: 'Compare amounts. Add a `note` to show on hover, `highlight` to pick out one bar, and `source` (with Markdown links) to cite your data.',
     yaml: `type: bar
 title: How wide is each planet?
 unit: km
@@ -16,7 +16,8 @@ data:
   - { label: Venus, value: 12104 }
   - { label: Mars, value: 6792 }
   - { label: Mercury, value: 4879 }
-caption: "Equatorial diameter. Source: NASA Planetary Fact Sheet."
+caption: "Equatorial diameter."
+source: "[NASA Planetary Fact Sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/)"
 `,
   },
   line: {
@@ -29,7 +30,8 @@ series:
   CO₂: [316.9, 325.7, 338.8, 354.5, 369.7, 389.9, 414.2]
 annotations:
   - { at: "1990", text: "Above 350 since 1988" }
-caption: "Annual mean concentration. Source: NOAA Global Monitoring Laboratory."
+caption: "Annual mean concentration."
+source: "[NOAA Global Monitoring Laboratory](https://gml.noaa.gov/ccgg/trends/data.html), Mauna Loa annual means"
 `,
   },
   donut: {
@@ -43,6 +45,7 @@ data:
   Argon: 0.93
   Everything else: 0.04
 caption: "Dry air, by volume."
+source: "[NOAA JetStream](https://www.noaa.gov/jetstream/atmosphere)"
 `,
   },
   meter: {
@@ -80,7 +83,7 @@ values: [2.49, 3.02, 3.70, 4.45, 5.33, 6.17, 7.02, 7.89]
 reveal_from: 4
 min: 0
 max: 10
-caption: "Source: UN World Population Prospects 2024."
+source: "[UN World Population Prospects 2024](https://population.un.org/wpp/)"
 `,
   },
   tier: {

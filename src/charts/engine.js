@@ -777,6 +777,10 @@ export function mountChart(fig, spec) {
   try {
     MOUNTS[spec.type](fig, body, spec);
     if (spec.caption && !fig.querySelector('.viz-caption')) fig.append(h('p', { class: 'viz-caption', text: spec.caption }));
+    if (spec.source && !fig.querySelector('.viz-source')) {
+      fig.append(h('p', { class: 'viz-source' }, h('span', { text: 'Source: ' }),
+        spec.source.map((sg) => (sg.url ? h('a', { href: sg.url, rel: 'noopener', target: '_blank', text: sg.text }) : sg.text))));
+    }
   } catch (err) {
     body.replaceChildren(h('p', { class: 'viz-error', text: `This chart couldn’t be drawn: ${err.message}` }));
     console.error(err);

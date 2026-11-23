@@ -52,7 +52,7 @@ mine: 82
 why: Bread + filling = sandwich.
 ```
 
-Every type also accepts `title` and `caption`. Full examples for each type are in `src/charts/templates.js` (the same ones the Chart Lab loads). Readers' answers are kept in their own browser only (localStorage) — there's no server or tracking.
+Every type also accepts `title`, `caption` and `source`. Write `source` with Markdown links, e.g. `source: "[NASA](https://nasa.gov); [NOAA](https://noaa.gov)"`, and it appears as a linked "Source:" line under the chart. In the text of a post, cite facts with footnotes: `like this.[^nasa]`, then `[^nasa]: [NASA fact sheet](https://…)` at the end. They render as numbered citations with a "Sources" list. Full examples for each type are in `src/charts/templates.js` (the same ones the Chart Lab loads). Readers' answers are kept in their own browser only (localStorage) — there's no server or tracking.
 
 ## How it's built
 
