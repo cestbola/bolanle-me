@@ -46,7 +46,7 @@ caption: "Dry air, by volume."
 `,
   },
   meter: {
-    blurb: 'Ask readers a question. They answer on a slider, then see how close they are to you.',
+    blurb: 'Ask readers a question. They answer on a slider, then see how close they are to you. Add `quiz: true` to make `mine` the correct answer instead of your opinion.',
     yaml: `type: meter
 question: Should Pluto be a planet again?
 labels: [Dwarf planet is fine, Bring it back]

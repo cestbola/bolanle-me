@@ -390,6 +390,12 @@ function donut(fig, body, spec) {
 
 /* ----------------------------------------------------------------- meter */
 
+function quizVerdict(gap) {
+  if (gap < 0.05) return 'Spot on.';
+  if (gap < 0.15) return 'Very close.';
+  if (gap < 0.3) return 'Not far off.';
+  return 'Quite a way off.';
+}
 function verdict(gap) {
   if (gap < 0.06) return 'We’re in near-perfect agreement.';
   if (gap < 0.18) return 'We broadly agree.';
@@ -428,15 +434,16 @@ function meter(fig, body, spec) {
 
   const reveal = (yours) => {
     const gap = Math.abs(yours - spec.mine) / span;
-    const line1 = verdict(gap);
+    const line1 = spec.quiz ? quizVerdict(gap) : verdict(gap);
+    const theirs = spec.quiz ? 'Answer' : 'Me';
     const pin = (who, v, cls) => h('div', { class: `meter-pin ${cls}`, style: `left:${pct(v)}%` }, h('span', { text: who }));
     body.replaceChildren(
       h('p', { class: 'meter-q', text: spec.question }),
       h('div', { class: 'meter-track revealed' },
         h('div', { class: 'meter-gap', style: `left:${Math.min(pct(yours), pct(spec.mine))}%;width:${Math.abs(pct(yours) - pct(spec.mine))}%` }),
-        pin('you', yours, 'you'), pin('me', spec.mine, 'me')),
+        pin('you', yours, 'you'), pin(theirs.toLowerCase(), spec.mine, 'me')),
       h('div', { class: 'meter-ends' }, h('span', { text: spec.left }), h('span', { text: spec.right })),
-      h('div', { class: 'meter-verdict' }, h('strong', { text: `${line1} You: ${readout(yours)} · Me: ${readout(spec.mine)}` }), spec.why ? h('p', { text: spec.why }) : null),
+      h('div', { class: 'meter-verdict' }, h('strong', { text: `${line1} You: ${readout(yours)} · ${theirs}: ${readout(spec.mine)}` }), spec.why ? h('p', { text: spec.why }) : null),
       h('button', { class: 'btn ghost', type: 'button', text: 'Change answer', onclick: () => { store.set(key, null); render(); } }),
     );
   };

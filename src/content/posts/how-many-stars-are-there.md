@@ -33,8 +33,9 @@ There's an old line that there are more stars in the sky than grains of sand on 
 ```chart
 type: meter
 question: Which is the bigger number?
+quiz: true
 labels: [Grains of sand on Earth, Stars in the universe]
-mine: 96
+mine: 100
 why: "Stars win, comfortably: about 7 × 10²² stars against about 7.5 × 10¹⁸ grains of sand. That's around 10,000 stars for every grain."
 ```
 

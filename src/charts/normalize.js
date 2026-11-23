@@ -108,7 +108,8 @@ export function normalize(raw) {
       const mine = raw.mine != null ? num(raw.mine, 'mine') : fail('a meter needs "mine" — your own answer');
       if (mine < min || mine > max) fail(`"mine" should sit between ${min} and ${max}`);
       const [left, right] = pair(raw.labels, 'labels', ['Nope', 'Absolutely']);
-      return { ...base, question: String(raw.question), min, max, mine, left, right, ...(raw.why ? { why: String(raw.why) } : {}) };
+      // quiz: true means `mine` is the correct answer rather than an opinion
+      return { ...base, question: String(raw.question), min, max, mine, left, right, quiz: raw.quiz === true, ...(raw.why ? { why: String(raw.why) } : {}) };
     }
     case 'quadrant': {
       const range = raw.range != null ? num(raw.range, 'range') : 10;

@@ -39,7 +39,7 @@ The easiest way: open **/chart-lab/**, pick a type, edit the example, hit **Copy
 | `bar` | ranked bars with emoji + hover notes, `highlight` a favourite | hover for notes |
 | `line` | things over time, emoji `markers`, `annotations` | crosshair hover |
 | `donut` | parts of a whole | hover slices/legend |
-| `meter` | hot-take slider | vote, then see how far they are from you |
+| `meter` | opinion slider, or a quiz with `quiz: true` | answer, then see how far they are from you (or from the right answer) |
 | `quadrant` | 2×2 opinion map (−10…10) | drag dots; your original stays as a ghost |
 | `guess` | you-draw-it line | draw their guess, reveal, get scored |
 | `tier` | S/A/B/C/D tier list | drag (or tap-tap) to re-rank and compare |
