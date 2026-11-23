@@ -4,9 +4,9 @@
    a palette validated for colour-blind separation (slot 1 is marigold). */
 :root {
   color-scheme: light;
-  --paper: #fdfcf8;
-  --card: #fdfcf8;
-  --sunk: #f4f2ea;
+  --paper: #ffffff;
+  --card: #ffffff;
+  --sunk: #f5f4f0;
   --ink: #141310;
   --ink-2: #4b4943;
   --muted: #86837a;
@@ -20,7 +20,7 @@
   --link: #141310;
   --bar-muted: #cfcbbf;
 
-  /* chart series — light (validated against #fdfcf8) */
+  /* chart series — light (validated against #ffffff) */
   --s1: #e4a70b; --s2: #285cc2; --s3: #e14c33; --s4: #099b8f;
   --s5: #7f47c7; --s6: #499537; --s7: #d85891; --s8: #3bacda;
 
@@ -87,6 +87,22 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.12; let
 .nav a { text-decoration: none; font-size: .92rem; font-weight: 500; color: var(--ink-2); padding: 6px 10px; border-bottom: 2px solid transparent; }
 .nav a:hover { color: var(--ink); }
 .nav a[aria-current='page'] { color: var(--ink); border-bottom-color: var(--brand); }
+.theme-switch {
+  position: relative; width: 60px; height: 30px; margin-left: 8px; padding: 0 7px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: space-between;
+  border: 1px solid var(--rule); border-radius: 999px; background: var(--sunk); color: var(--muted);
+  transition: background .25s, border-color .25s;
+}
+.theme-switch:hover { border-color: var(--ink-2); }
+.theme-switch .ico { width: 14px; height: 14px; position: relative; z-index: 1; transition: color .25s; }
+.theme-switch .knob {
+  position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--brand); box-shadow: 0 1px 3px rgb(0 0 0 / .2); transition: transform .25s cubic-bezier(.3,.7,.3,1);
+}
+.theme-switch .sun { color: var(--brand-ink); }
+.theme-switch[aria-checked='true'] .knob { transform: translateX(30px); }
+.theme-switch[aria-checked='true'] .sun { color: var(--muted); }
+.theme-switch[aria-checked='true'] .moon { color: var(--brand-ink); }
 .icon-btn {
   background: none; border: 1px solid var(--rule); color: var(--ink-2); border-radius: var(--radius);
   width: 34px; height: 34px; display: grid; place-items: center; cursor: pointer; margin-left: 6px;
