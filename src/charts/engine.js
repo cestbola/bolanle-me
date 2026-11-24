@@ -831,7 +831,7 @@ function orbit(fig, body, spec) {
       },
     }))) : null;
 
-  body.replaceChildren(svgHolder, h('div', { class: 'orbit-bar' }, playBtn, slider, dateEl), picker, jumps, readout);
+  body.replaceChildren(...[svgHolder, h('div', { class: 'orbit-bar' }, playBtn, slider, dateEl), picker, jumps, readout].filter(Boolean));
   playBtn.append('▶ Play');
 
   function play() {
