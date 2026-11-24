@@ -1,9 +1,15 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 import { unified } from '@astrojs/markdown-remark';
 import remarkCharts from './src/charts/remark-charts.mjs';
 
 export default defineConfig({
   site: 'https://bolanle.me',
+  env: {
+    schema: {
+      // Server-only secret; import with `import { MONGODB_URI } from 'astro:env/server'`
+      MONGODB_URI: envField.string({ context: 'server', access: 'secret', optional: true }),
+    },
+  },
   markdown: {
     // ```chart blocks in posts become interactive charts (see src/charts/)
     processor: unified({
