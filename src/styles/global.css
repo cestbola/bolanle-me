@@ -375,6 +375,30 @@ ol.viz-cites li::before { content: '[' counter(cite) '] '; font-weight: 600; col
 @keyframes fade { from { opacity: 0; } }
 @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 
+
+/* ================================================================ orbit */
+.orbit-stage { display: flex; justify-content: center; }
+.orbit-ring { fill: none; stroke: var(--grid); stroke-width: 1; }
+.orbit-ring.earth { stroke: var(--axis); }
+.orbit-sun { fill: var(--brand); stroke: var(--ink); stroke-width: 1.5; }
+.orbit-planet circle { stroke: var(--paper); stroke-width: 1.5; }
+.orbit-planet text { font-size: 11.5px; fill: var(--ink-2); paint-order: stroke; stroke: var(--paper); stroke-width: 3px; }
+.orbit-planet.is-earth text, .orbit-planet.focus text { fill: var(--ink); font-weight: 700; }
+.orbit-planet.focus circle { stroke: var(--ink); stroke-width: 2; }
+.orbit-saturn-ring { fill: none; stroke: var(--ink-2); stroke-width: 1.2; opacity: .7; }
+.orbit-sight { stroke: var(--ink-2); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.orbit-sight.sun { stroke: var(--muted); stroke-width: 1; opacity: .7; }
+.orbit-opposed .orbit-sight:not(.sun) { stroke: var(--brand); stroke-width: 2.5; stroke-dasharray: none; }
+.orbit-bar { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+.orbit-bar input[type='range'] { flex: 1; min-width: 0; accent-color: var(--ink); }
+.orbit-bar .btn { min-width: 96px; }
+.orbit-date { font: 600 .9rem var(--sans); font-variant-numeric: tabular-nums; min-width: 6.4em; text-align: right; }
+.orbit-picks, .orbit-events { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; }
+.orbit-events-lbl { font-size: .8rem; color: var(--muted); margin-right: 2px; }
+.chip[aria-pressed='true'] { border-color: var(--ink); box-shadow: inset 0 -3px 0 var(--brand); }
+.orbit-readout { margin: 12px 0 0; font-size: .92rem; color: var(--ink-2); min-height: 3em; }
+.orbit-opp { color: var(--ink); font-weight: 600; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .viz .bar, .viz .slice { opacity: 1 !important; }

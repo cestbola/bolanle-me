@@ -1,7 +1,9 @@
 // Validates a parsed chart spec and turns friendly shorthand into one canonical
 // shape. Runs at build time (so a typo fails loudly) and in the Chart Lab.
 
-export const TYPES = ['bar', 'line', 'donut', 'meter', 'quadrant', 'guess', 'tier'];
+export const TYPES = ['bar', 'line', 'donut', 'meter', 'quadrant', 'guess', 'tier', 'orbit'];
+
+const ORBIT_PLANETS = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn'];
 
 const fail = (msg) => {
   throw new Error(msg);
@@ -171,6 +173,34 @@ export function normalize(raw) {
       }));
       if (tiers.length < 2) fail('a tier list needs at least two tiers');
       return { ...base, tiers };
+    }
+    case 'orbit': {
+      const day = (v, what) => {
+        const t = String(v ?? '');
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(t) || Number.isNaN(Date.parse(`${t}T12:00:00Z`))) fail(`${what} should be a date like 2027-02-19 (got ${JSON.stringify(v)})`);
+        const y = +t.slice(0, 4);
+        if (y < 1800 || y > 2050) fail(`${what} should be between 1800 and 2050, the years the planet maths is accurate for`);
+        return t;
+      };
+      const start = day(raw.start ?? '2026-11-24', '"start"');
+      const end = day(raw.end ?? '2036-12-31', '"end"');
+      if (Date.parse(end) <= Date.parse(start)) fail('"end" should be after "start"');
+      const planets = raw.planets == null ? ORBIT_PLANETS : [].concat(raw.planets).map(String);
+      for (const n of planets) if (!ORBIT_PLANETS.includes(n)) fail(`unknown planet "${n}". Try: ${ORBIT_PLANETS.join(', ')}`);
+      if (!planets.includes('Earth')) planets.unshift('Earth');
+      if (planets.length < 2) fail('"planets" should include at least one planet besides Earth');
+      const ordered = ORBIT_PLANETS.filter((n) => planets.includes(n));
+      const events = (raw.events ?? []).map((e, i) => {
+        if (typeof e !== 'object' || e === null) fail(`events[${i}] should look like {date: 2027-02-19, label: ..., planet: Mars}`);
+        const planet = e.planet != null ? String(e.planet) : null;
+        if (planet && !ordered.includes(planet)) fail(`events[${i}].planet "${planet}" isn't one of the planets shown`);
+        return { date: day(e.date, `events[${i}].date`), label: String(e.label ?? e.date), ...(planet ? { planet } : {}) };
+      }).sort((a, b) => a.date.localeCompare(b.date));
+      const focus = raw.focus != null ? String(raw.focus) : ordered.find((n) => n !== 'Earth');
+      if (!ordered.includes(focus) || focus === 'Earth') fail(`"focus" should be one of the planets shown, other than Earth`);
+      const speed = raw.speed != null ? num(raw.speed, 'speed') : 30;
+      if (speed <= 0) fail('"speed" is days per second and should be above 0');
+      return { ...base, start, end, planets: ordered, events, focus, speed };
     }
   }
 }

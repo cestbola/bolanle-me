@@ -17,6 +17,28 @@ Two ideas explain almost everything below:
 
 Astronomers measure brightness in **magnitudes**, where *lower* numbers mean brighter. That's confusing, so the charts here use something simpler: how many times brighter each planet looks than **Vega**, one of the brightest stars in the night sky.[^vega] All dates and figures were calculated with the open-source Astronomy Engine library[^engine] and checked against published almanacs.
 
+## See it from above
+
+Here's the solar system from above, with the real positions of the planets from now to 2036. Press play, drag the slider, or jump to one of the big moments. Pick a planet to watch and the dashed line shows the view from Earth. When Earth swings between the Sun and an outer planet, the line lights up: that's an opposition.
+
+```chart
+type: orbit
+title: The planets, from above
+start: 2026-11-24
+end: 2036-12-31
+planets: [Mercury, Venus, Earth, Mars, Jupiter, Saturn]
+focus: Mars
+events:
+  - { date: 2026-11-27, label: Venus at its brightest, planet: Venus }
+  - { date: 2027-02-19, label: Mars opposition, planet: Mars }
+  - { date: 2031-12-11, label: Saturn rings widest, planet: Saturn }
+  - { date: 2033-06-28, label: Mars opposition, planet: Mars }
+  - { date: 2034-10-02, label: Jupiter at its best, planet: Jupiter }
+  - { date: 2035-09-15, label: Mars very close, planet: Mars }
+caption: "Distances from the Sun are squeezed (square-rooted) so Mercury and Saturn fit on one screen, so the gaps between orbits are not to scale. Positions are accurate to a fraction of a degree."
+source: "Orbits from [JPL approximate positions](https://ssd.jpl.nasa.gov/planets/approx_pos.html)"
+```
+
 ## How bright does each planet get?
 
 ```chart
@@ -58,6 +80,23 @@ source: "Calculated with [Astronomy Engine](https://github.com/cosinekitty/astro
 ```
 
 In 2033 and 2035 Mars reaches opposition near the closest point of its orbit to the Sun. Astronomers call these **perihelic oppositions**, and they're the best views of Mars in years.[^seds] By 2035, Mars will look about four and a half times brighter than it does in 2027.
+
+Watch Earth catch up with Mars. Because Earth moves faster on its inner track, it overtakes Mars about every 26 months, and each overtaking is an opposition:
+
+```chart
+type: orbit
+title: Earth overtakes Mars
+start: 2033-01-01
+end: 2035-12-31
+planets: [Earth, Mars]
+focus: Mars
+speed: 20
+events:
+  - { date: 2033-06-28, label: Opposition, planet: Mars }
+  - { date: 2035-09-15, label: Closest in a decade, planet: Mars }
+caption: "Oppositions in 2033 and 2035. The 2035 one is closer because Mars is nearer the Sun, and so nearer Earth, at that point in its orbit."
+source: "Orbits from [JPL approximate positions](https://ssd.jpl.nasa.gov/planets/approx_pos.html)"
+```
 
 ```chart
 type: meter

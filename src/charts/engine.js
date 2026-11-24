@@ -3,6 +3,8 @@
 // resize; interactive ones keep their state in a closure and persist the
 // reader's answers in localStorage so they survive a refresh.
 
+import { position, sightLine, centuries } from './ephemeris.js';
+
 const SVGNS = 'http://www.w3.org/2000/svg';
 
 /* ---------------------------------------------------------------- helpers */
@@ -786,9 +788,147 @@ function tier(fig, body, spec) {
   render();
 }
 
+/* ----------------------------------------------------------------- orbit */
+
+const DAY = 86400000;
+const PLANET_STYLE = {
+  Mercury: { c: 6, r: 3.5 }, Venus: { c: 0, r: 5 }, Earth: { c: 1, r: 5.5 },
+  Mars: { c: 2, r: 4.5 }, Jupiter: { c: 3, r: 8 }, Saturn: { c: 4, r: 7 },
+};
+const fmtDate = (ms) => new Date(ms).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+
+function orbit(fig, body, spec) {
+  const t0 = Date.parse(`${spec.start}T12:00:00Z`);
+  const days = Math.round((Date.parse(`${spec.end}T12:00:00Z`) - t0) / DAY);
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const outer = Math.max(...spec.planets.map((n) => Math.hypot(...Object.values(position(n, centuries(t0))))));
+  // distances from the Sun are squeezed with a square root so Venus and Jupiter can share a screen
+  const squeeze = (r) => Math.sqrt(r / (outer * 1.05));
+  let day = 0, focus = spec.focus, playing = false, last = 0, raf = 0, visible = false, draw;
+
+  const svgHolder = h('div', { class: 'orbit-stage' });
+  const readout = h('p', { class: 'orbit-readout', 'aria-live': 'off' });
+  const dateEl = h('output', { class: 'orbit-date' });
+  const slider = h('input', {
+    type: 'range', min: 0, max: days, step: 1, value: 0, 'aria-label': 'Date',
+    oninput: (e) => { pause(); go(+e.target.value); },
+  });
+  const playBtn = h('button', { class: 'btn small', type: 'button', onclick: () => (playing ? pause() : play()) });
+  const targets = spec.planets.filter((n) => n !== 'Earth');
+  const picker = targets.length > 1 ? h('div', { class: 'orbit-picks', role: 'group', 'aria-label': 'Planet to watch' },
+    targets.map((n) => h('button', {
+      class: 'chip', type: 'button', 'data-p': n, text: n,
+      onclick: () => { focus = n; update(); },
+    }))) : null;
+  const jumps = spec.events.length ? h('div', { class: 'orbit-events' },
+    h('span', { class: 'orbit-events-lbl', text: 'Jump to' }),
+    spec.events.map((e) => h('button', {
+      class: 'chip', type: 'button', text: `${e.label} · ${fmtDate(Date.parse(`${e.date}T12:00:00Z`)).replace(/^\d+ /, '')}`,
+      onclick: () => {
+        pause();
+        if (e.planet) focus = e.planet;
+        go(Math.round((Date.parse(`${e.date}T12:00:00Z`) - t0) / DAY));
+      },
+    }))) : null;
+
+  body.replaceChildren(svgHolder, h('div', { class: 'orbit-bar' }, playBtn, slider, dateEl), picker, jumps, readout);
+  playBtn.append('▶ Play');
+
+  function play() {
+    if (playing) return;
+    if (day >= days) go(0);
+    playing = true; last = 0;
+    playBtn.textContent = '❚❚ Pause';
+    raf = requestAnimationFrame(tick);
+  }
+  function pause() {
+    playing = false;
+    cancelAnimationFrame(raf);
+    playBtn.textContent = '▶ Play';
+  }
+  function tick(now) {
+    if (!playing) return;
+    if (last) day = Math.min(days, day + ((now - last) / 1000) * spec.speed);
+    last = now;
+    update();
+    if (day >= days) return pause();
+    raf = requestAnimationFrame(tick);
+  }
+  function go(d) { day = clamp(d, 0, days); update(); }
+
+  let nodes = {};
+  function update() {
+    if (!draw) return;
+    const ms = t0 + Math.round(day) * DAY;
+    const T = centuries(ms);
+    nodes.update(T);
+    slider.value = Math.round(day);
+    dateEl.textContent = fmtDate(ms);
+    const { mkm, au, elongation } = sightLine(focus, T);
+    const near = elongation >= 170;
+    readout.replaceChildren(
+      h('strong', { text: focus }),
+      ` is ${Math.round(mkm).toLocaleString('en-GB')} million km from Earth (${au.toFixed(2)} AU). `,
+      near ? h('span', { class: 'orbit-opp', text: 'Earth is passing between it and the Sun: opposition, when it is at its best.' })
+        : elongation < 20 ? 'It is lost in the Sun’s glare, on the far side of the Sun or close beside it.'
+        : '',
+    );
+    picker?.querySelectorAll('.chip').forEach((b) => b.setAttribute('aria-pressed', b.dataset.p === focus));
+    body.classList.toggle('orbit-opposed', near);
+  }
+
+  responsive(svgHolder, (w) => {
+    const size = clamp(w, 280, 520);
+    const svg = svgRoot(svgHolder, size, size, `Top-down view of the planets orbiting the Sun, ${fmtDate(t0)} to ${fmtDate(t0 + days * DAY)}`);
+    const c = size / 2, R = c - 26;
+    const xy = (p) => {
+      const r = Math.hypot(p.x, p.y) || 1, k = (squeeze(r) * R) / r;
+      return [c + p.x * k, c - p.y * k];
+    };
+    const T0 = centuries(t0);
+    spec.planets.forEach((n) => {
+      const pts = [];
+      for (let i = 0; i <= 120; i++) pts.push(xy(position(n, T0, (i / 120) * 2 * Math.PI)).map((v) => v.toFixed(1)).join(','));
+      s('polyline', { class: `orbit-ring${n === 'Earth' ? ' earth' : ''}`, points: pts.join(' ') }, svg);
+    });
+    s('circle', { cx: c, cy: c, r: 9, class: 'orbit-sun' }, svg);
+    const sight = s('line', { class: 'orbit-sight' }, svg);
+    const sunSight = s('line', { class: 'orbit-sight sun' }, svg);
+    const els = {};
+    spec.planets.forEach((n) => {
+      const st = PLANET_STYLE[n];
+      const g = s('g', { class: `orbit-planet${n === 'Earth' ? ' is-earth' : ''}` }, svg);
+      s('circle', { r: st.r, style: `fill:${color(st.c)}` }, g);
+      if (n === 'Saturn') s('ellipse', { rx: st.r * 1.9, ry: st.r * .55, class: 'orbit-saturn-ring' }, g);
+      s('text', { x: st.r + 5, y: 4, text: undefined }, g).textContent = n === 'Earth' ? 'Earth (you)' : n;
+      els[n] = g;
+    });
+    nodes = {
+      update(T) {
+        for (const n of spec.planets) els[n].setAttribute('transform', `translate(${xy(position(n, T)).map((v) => v.toFixed(1))})`);
+        const [ex, ey] = xy(position('Earth', T)), [fx, fy] = xy(position(focus, T));
+        sight.setAttribute('x1', ex); sight.setAttribute('y1', ey); sight.setAttribute('x2', fx); sight.setAttribute('y2', fy);
+        sunSight.setAttribute('x1', ex); sunSight.setAttribute('y1', ey); sunSight.setAttribute('x2', c); sunSight.setAttribute('y2', c);
+        for (const n of spec.planets) els[n].classList.toggle('focus', n === focus);
+      },
+    };
+    draw = true;
+    update();
+  });
+
+  // play while it's on screen (unless the reader prefers less motion), pause when it scrolls away
+  new IntersectionObserver(([e]) => {
+    visible = e.isIntersecting;
+    if (!visible) { if (playing) { pause(); body.dataset.autopaused = '1'; } }
+    else if (!reduced && !body.dataset.touched && day === 0) play();
+    else if (body.dataset.autopaused && !body.dataset.touched) { delete body.dataset.autopaused; play(); }
+  }, { threshold: 0.5 }).observe(fig);
+  body.addEventListener('pointerdown', () => { body.dataset.touched = '1'; }, { capture: true });
+}
+
 /* ------------------------------------------------------------------ mount */
 
-const MOUNTS = { bar, line, donut, meter, quadrant, guess, tier };
+const MOUNTS = { bar, line, donut, meter, quadrant, guess, tier, orbit };
 
 export function mountChart(fig, spec) {
   const body = fig.querySelector('.viz-body') || fig.appendChild(h('div', { class: 'viz-body' }));

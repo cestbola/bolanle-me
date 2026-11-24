@@ -98,4 +98,19 @@ tiers:
   D: [Mercury]
 `,
   },
+  orbit: {
+    blurb: 'A top-down solar system that moves. Readers can play, scrub through time, pick a planet to watch, or jump to your `events`. Positions are real (1800–2050).',
+    yaml: `type: orbit
+title: The solar system from above
+start: 2026-11-24
+end: 2036-12-31
+planets: [Venus, Earth, Mars, Jupiter, Saturn]
+focus: Mars
+events:
+  - { date: 2027-02-19, label: Mars opposition, planet: Mars }
+  - { date: 2035-09-15, label: Mars very close, planet: Mars }
+caption: "Distances from the Sun are squeezed so the inner planets fit."
+source: "Orbits from [JPL approximate positions](https://ssd.jpl.nasa.gov/planets/approx_pos.html)"
+`,
+  },
 };
